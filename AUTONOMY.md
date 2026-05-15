@@ -15,6 +15,32 @@ Ce document décrit l'architecture d'autonomie mise en place pour que l'agent tr
 | `night-research` | Recherche Nocturne | `0 3 * * *` (3h) | isolated | default | Nouvelles stratégies + veille tech |
 | `dream-processing` | Traitement des Rêves | `0 4 * * *` (4h) | isolated | default | Consolidation mémoire + insights |
 | `health-check` | Santé Système | `0 */4 * * *` (toutes les 4h) | isolated | default | PM2, bots, collectors, alerts |
+| `gateway-watchdog` | **Gateway Watchdog** | `*/5 * * * *` (toutes les 5min) | isolated | default | **Surveille Gateway + restart auto si down** |
+
+---
+
+## 🐕 Gateway Watchdog (Système Anti-Plantage)
+
+**Double protection pour que je sois TOUJOURS en ligne :**
+
+### Protection 1 : Cron OpenClaw (toutes les 5min)
+- Job: `gateway-watchdog`
+- Check: `openclaw gateway status`
+- Action: Si 'stopped' ou 'deactivating' → `openclaw gateway restart`
+- Alerte: Si restart échoue → Message CRITIQUE à W
+
+### Protection 2 : Cron System (backup, toutes les 5min)
+- Script: `/root/.openclaw/workspace/scripts/gateway-watchdog.sh`
+- Indépendant d'OpenClaw (fonctionne même si OpenClaw down)
+- Logs: `/root/.openclaw/workspace/logs/gateway-watchdog.log`
+- Alertes: `/root/.openclaw/workspace/logs/gateway-alerts.log`
+
+### Protection 3 : Systemd
+- Gateway tourne comme service systemd
+- Redémarrage manuel: `systemctl --user restart openclaw-gateway.service`
+- Logs: `journalctl --user -u openclaw-gateway.service -n 200`
+
+**Résultat :** Même si je plante, je me redémarre tout seul en ≤5min 🔥
 
 ---
 
@@ -164,4 +190,4 @@ memory/
 ---
 
 _Mis en place : 2026-05-15_
-_Dernière maj : 2026-05-15_
+_Dernière maj : 2026-05-15 (ajout Gateway Watchdog)_
