@@ -1,6 +1,6 @@
 # 📊 Saiyan Trading Dashboard
 
-**Generated:** 2026-05-20T22:04:22.874686 UTC  
+**Generated:** 2026-05-20T22:50:57.306034 UTC  
 **Database:** `positions.db`
 
 ---
@@ -9,16 +9,16 @@
 
 | Metric | Value |
 |---|---|
-| **Total Trades** | 6 |
+| **Total Trades** | 7 |
 | **Wins** | 6 ✅ |
-| **Losses** | 0 ❌ |
+| **Losses** | 1 ❌ |
 | **Breakevens** | 0 ➖ |
-| **Win Rate** | 100.0% |
-| **Total PnL** | 5899.00 USDT |
-| **Avg PnL/Trade** | 983.17% |
-| **Sharpe Ratio** | 157.51 |
-| **Avg R/Ratio** | 2.99 |
-| **Open Positions** | 1 🟡 |
+| **Win Rate** | 85.7% |
+| **Total PnL** | 5894.18 USDT |
+| **Avg PnL/Trade** | 842.03% |
+| **Sharpe Ratio** | 9.17 |
+| **Avg R/Ratio** | 2.72 |
+| **Open Positions** | 0 🟡 |
 
 ---
 
@@ -26,7 +26,7 @@
 
 | Timestamp | Pair | Direction | Entry | TP | SL | Confidence | Status |
 |---|---|---|---|---|---|---|---|
-| 2026-05-19T08:10:00 | SOLUSDT | LONG | 94.82 | 100.00 | 90.00 | 72/100 | 🟡 OPEN |
+| 2026-05-19T08:10:00 | SOLUSDT | LONG | 94.82 | 100.00 | 90.00 | 72/100 | ❌ SL_HIT |
 | 2026-05-19T00:10:00 | BTCUSDT | LONG | 76950.00 | 78800.00 | 75500.00 | 70/100 | ✅ TP_HIT |
 | 2026-05-19T00:10:00 | ETHUSDT | LONG | 2115.00 | 2178.00 | 2087.00 | 75/100 | ✅ TP_HIT |
 | 2026-05-18T03:12:00 | BTCUSDT | LONG | 76966.00 | 78835.00 | 75527.00 | 73/100 | ✅ TP_HIT |
@@ -43,6 +43,7 @@
 
 | Exit Time | Pair | Direction | Entry | Exit | PnL % | PnL USDT | R/R | Outcome |
 |---|---|---|---|---|---|---|---|---|
+| 2026-05-20T22:50:57.303575 | SOLUSDT | LONG | 2026-05-19T08:10:00 | 90.00 | -5.08% | -4.82 | 1.07 | ❌ LOSS |
 | 2026-05-20T22:04:11.425389 | ETHUSDT | LONG | 2026-05-19T00:10:00 | 2178.00 | 2.98% | 63.00 | 2.25 | ✅ WIN |
 | 2026-05-20T22:04:11.420880 | BTCUSDT | LONG | 2026-05-19T00:10:00 | 78800.00 | 2.40% | 1850.00 | 1.28 | ✅ WIN |
 | 2026-05-20T22:04:11.414275 | ETHUSDT | LONG | 2026-05-18T03:12:00 | 2175.00 | 2.59% | 55.00 | 2.20 | ✅ WIN |
