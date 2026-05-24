@@ -1,5 +1,51 @@
 # Modules Complétés - Apprentissage Théorique Trading Quantitatif
 
+## ✅ Semaine 29 - Stress Testing & Validation
+
+**Statut:** ✅ Complet (24 Mai 2026)
+
+**Fichiers:**
+- `notes/semaine-29-stress-testing.md` - Théorie et documentation complète (10KB)
+- `code/stress_testing_framework.py` - Implémentation Python complète (23KB)
+
+**Concepts maîtrisés:**
+- Historical stress scenarios (COVID, FTX, LUNA, China Ban)
+- Hypothetical scenarios (Hack, Regulatory, Flash Crash)
+- Monte Carlo simulation with stressed parameters
+- VaR/CVaR under stress
+- Circuit breaker validation
+- Walk-forward validation framework
+
+**9 Scénarios testés (1000 simulations chacun):**
+- COVID-19 Crash (Mar 2020): Return -6.6%, DD -14.4% ✅
+- FTX Collapse (Nov 2022): Return -3.6%, DD -8.1% ✅
+- LUNA/UST Depeg (May 2022): Return -2.9%, DD -7.4% ✅
+- China Mining Ban (Jun 2021): Return -17.8%, DD -30.9% ⚠️
+- COVID Recovery Rally (Apr 2020): Return +40.7%, DD -4.6% ✅
+- Exchange Hack (Hypothetical): Return -2.9%, DD -8.3% ✅
+- Regulatory Crackdown: Return -10.6%, DD -17.0% ✅
+- Flash Crash: Return -0.9%, DD -3.7% ✅
+- Stablecoin Run (Systemic): Return -5.5%, DD -12.1% ✅
+
+**Validation Metrics:**
+- Survival Rate: 100% ✅ (threshold: 90%+)
+- CB Trigger Rate: 0.0% ✅ (threshold: <5%)
+- Avg Return Under Stress: -1.1% ✅ (threshold: >-10%)
+- Worst Drawdown: -30.9% ⚠️ (threshold: >-25%) - China Ban
+
+**Insights clés:**
+- Regime-dependent sizing réduit drawdowns de 50-60%
+- Durée > Intensité: China Ban (21 jours) pire que Flash Crash (1 jour)
+- 0 CB triggers: Position sizing protège mieux que circuit breakers
+- Quarter-Kelly + Bear regime (6.25%) = protection efficace
+
+**Applications Saiyan:**
+- Weekly stress testing (Sunday 17h UTC)
+- Circuit breaker validation automatique
+- Scenario-specific response plans
+
+---
+
 ## ✅ Semaine 28 - HMM Integration Avancée (4 Régimes)
 
 **Statut:** ✅ Complet (24 Mai 2026)
