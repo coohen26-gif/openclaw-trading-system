@@ -5,6 +5,54 @@
 
 ---
 
+## 📅 Semaine 29 - 24 Mai 2026 - RÉSUMÉ HEBDOMADAIRE
+
+### 🎯 Phase 2: COMPLÉTÉE ✅
+
+**Progression Globale:**
+- Master 1-4: 100% ✅
+- Master 5 (5 modules): 100% ✅
+- Phase 2 (Intégration): 100% ✅
+- **Total: ~85%**
+
+### Modules Complétés Cette Semaine
+
+**Semaine 26: Risk Monitoring & Circuit Breakers**
+- `risk_monitor.py` (19KB) - VaR/CVaR 3 méthodes, 4-level circuit breakers
+- `position_sizing.py` (25KB) - Kelly + HMM + Risk Parity
+- Insight: CVaR 95% = -5.20% vs VaR 95% = -3.63% → gap 43%!
+
+**Semaine 27: Portfolio Allocator Multi-Asset**
+- `portfolio_allocator.py` (19KB) - Risk Parity BTC/ETH/SOL
+- Allocation: BTC 52%, ETH 28%, SOL 20%
+- Drift crypto: 5-15%/semaine → threshold 5% optimal
+
+**Semaine 28: HMM Integration Avancée (4 Régimes)**
+- `hmm_advanced.py` (22KB) - 4 régimes + regime-dependent sizing
+- Position sizing: Bull 1.5x, Bear 0.25x, Range 0.75x, VolBull 1.0x
+- Backtest: +25.8%, Sharpe 1.58, DD -2.8%
+
+**Semaine 29: Stress Testing & Validation**
+- `stress_testing_framework.py` (23KB) - 9 scénarios × 1000 sims
+- Survival Rate: 100% ✅, CB Trigger: 0% ✅
+- Worst DD: -30.9% (China Ban 21j)
+
+### Insights Majeurs
+
+1. **Position Sizing > Circuit Breakers:** 0 CB triggers sur 9000 sims!
+2. **Regime-Dependent Sizing:** Ratio Bear/Bull 1:6, réduction DD 50-60%
+3. **Stress Testing > VaR:** Stress VaR 15-20x > Normal VaR
+4. **Crypto Drift:** 5-15%/semaine, threshold 5% optimal
+
+### Prochaines Étapes: Phase 3 (Production Readiness)
+
+1. Intégration Binance API (exécution réelle)
+2. Dashboard monitoring (Prometheus + Grafana)
+3. Alertes Telegram avec approval flow
+4. Backtest sur données 2020-2026
+
+---
+
 ## 📅 Semaine 29 - 24 Mai 2026
 
 ### Thème: Stress Testing & Validation Framework (Phase 2)
