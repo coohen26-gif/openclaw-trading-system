@@ -1,5 +1,48 @@
 # Modules Complétés - Apprentissage Théorique Trading Quantitatif
 
+## ✅ Semaine 28 - HMM Integration Avancée (4 Régimes)
+
+**Statut:** ✅ Complet (24 Mai 2026)
+
+**Fichiers:**
+- `notes/semaine-28-hmm-advanced.md` - Théorie et documentation complète (10KB)
+- `code/hmm_advanced.py` - Implémentation Python complète (22KB)
+
+**Concepts maîtrisés:**
+- HMM 4 régimes (Bull, Bear, Range, Volatile Bull)
+- Regime-dependent position sizing (0.25x - 1.5x Kelly)
+- Regime-dependent strategy selection
+- Backtest performance par régime
+- Real-time regime detection (confidence + persistence)
+- Rolling window retraining
+
+**4 Régimes:**
+- 🐂 Bull: Returns +, vol basse → 1.5x Kelly, Momentum, -8%/-15%, 10j
+- 🐻 Bear: Returns -, vol haute → 0.25x Kelly, Mean Rev, -5%/+8%, 3j
+- ➡️ Range: Returns ~0, vol basse → 0.75x Kelly, Mean Rev, -4%/+6%, 5j
+- 🚀 Volatile Bull: Returns +, vol haute → 1.0x Kelly, Breakout, -10%/+20%, 7j
+
+**Résultats tests:**
+- Données: 500 jours synthétiques (4 régimes)
+- Backtest: +25.8% return, Sharpe 1.58, Max DD -2.8%
+- Performance par régime:
+  - Bear: +21.2% (493 trades), Sharpe 1.40, Win Rate 52.3%
+  - Bull: +3.7% (6 trades), Sharpe 8.62, Win Rate 83.3%
+
+**Insights clés:**
+- Ratio position Bear/Bull: 1:6 (protection capitale!)
+- Durée moyenne régimes: 2-4 jours
+- Volatile Bull capture BTC 2021 (+80%, vol 60%)
+- Convergence: 2/4 régimes (lookback à optimiser)
+
+**Applications Saiyan:**
+- HMM retraining weekly (Sunday 18h)
+- Regime detection temps réel
+- Position sizing automatique selon régime
+- Alertes Telegram changement de régime
+
+---
+
 ## ✅ Semaine 27 - Portfolio Allocator Multi-Asset
 
 **Statut:** ✅ Complet (24 Mai 2026)
