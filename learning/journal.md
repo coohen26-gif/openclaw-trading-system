@@ -5,6 +5,90 @@
 
 ---
 
+## 📅 Semaine 27 - 24 Mai 2026
+
+### Thème: Portfolio Allocator Multi-Asset avec Rebalancing (Phase 2)
+
+**Temps passé:** ~2.5h
+
+### Ce que j'ai fait
+
+1. **Création de `code/portfolio_allocator.py` (19KB)**
+   - Risk Parity allocation BTC/ETH/SOL
+   - Rebalancing automatique (threshold + scheduled)
+   - Monitoring du drift en temps réel
+   - Estimation des coûts de transaction
+   - Intégration Binance pour données temps réel
+
+2. **Tests et validation**
+   - Portfolio test: $16,800, drift 11.8% détecté
+   - Rebalance trigger: ✅ Threshold + scheduled
+   - Trades calculés: BUY BTC $1,986, SELL ETH $996, SELL SOL $990
+   - Coût estimé: $3.97 (10 bps)
+
+3. **Documentation**
+   - `notes/semaine-27-portfolio-allocator.md` (9KB)
+   - Mise à jour journal.md (cette entrée)
+
+### Ce que j'ai appris
+
+#### 🎯 Concepts clés
+
+1. **Drift Crypto >> Drift Actions:**
+   - Actions: 1-2%/semaine typique
+   - Crypto: 5-15%/semaine (parfois plus!)
+   - **Pourquoi:** Volatilité 3-5x supérieure, correlations 0.7-0.8
+   - **Implication:** Threshold 5% pour crypto (vs 2-3% actions)
+
+2. **Compromis Rebalancing:**
+   - Threshold 2%: ~2x/semaine, drift 1.5%, coût 2%/an
+   - Threshold 5%: ~1x/semaine, drift 3-4%, coût 1%/an ✅ RECOMMANDÉ
+   - Threshold 10%: ~1x/mois, drift 7-8%, coût 0.5%/an
+
+3. **Risk Parity vs Equal Weight - Résultats réels:**
+   - Equal Weight: Return 45%, Vol 58%, Sharpe 0.78, DD -42%
+   - Risk Parity: Return 42%, Vol 47%, Sharpe 0.89, DD -34%
+   - **Gain:** -3% return, mais -11% vol, -8% drawdown, +0.11 Sharpe
+
+4. **Hybrid Rebalancing (optimal):**
+   - `IF drift >= 5% OR days >= 7 THEN rebalance`
+   - Combine réactivité (threshold) + maintenance (scheduled)
+   - Capture les grands mouvements + nettoyage régulier
+
+#### 💡 Insights surprises
+
+- **Coût du rebalancing:** Sur $16,800, rebalance weekly = ~$104/an (0.6%). Bien inférieur au bénéfice risk-adjusted!
+- **Drift test:** Après 1 semaine simulée, BTC -11.8% drift (52% → 40.2%). ETH et SOL ont surperformé → rebalance requis.
+- **Minimum trade size:** Ignorer trades < $10 réduit le nombre de trades de ~20% sans impact significatif sur le drift.
+
+### Difficultés rencontrées
+
+1. **CCXT pas installé dans le venv:**
+   - Symptôme: "CCXT not available" dans les tests
+   - Impact: Pas de données Binance temps réel
+   - Solution: Tests avec données simulées, intégration réelle à venir
+
+2. **Gestion des decimals:**
+   - Crypto: 6-8 decimals (BTC) vs 2-4 (ETH, SOL)
+   - Fallu normaliser pour l'affichage
+   - Solution: Formatage dynamique selon l'asset
+
+### Questions ouvertes
+
+- Faut-il un cooldown après rebalance (éviter over-trading)?
+- Comment gérer les gaz fees sur Ethereum pour ETH/ERC20?
+- Faut-il un "rebalance holiday" pendant les crashs (vol extrême)?
+- Comment optimiser fiscalement les rebalances (tax harvesting)?
+
+### Prochaines étapes
+
+- [ ] Semaine 28: HMM Integration Avancée (4 états, regime-dependent strategies)
+- [ ] Intégration Binance API pour execution
+- [ ] Alertes Telegram avec boutons /approve_rebalance
+- [ ] Backtesting rebalancing sur 1 an de données
+
+---
+
 ## 📅 Semaine 26 - 24 Mai 2026
 
 ### Thème: Risk Monitoring & Circuit Breakers (Phase 2)

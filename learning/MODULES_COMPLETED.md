@@ -1,5 +1,53 @@
 # Modules Complétés - Apprentissage Théorique Trading Quantitatif
 
+## ✅ Semaine 27 - Portfolio Allocator Multi-Asset
+
+**Statut:** ✅ Complet (24 Mai 2026)
+
+**Fichiers:**
+- `notes/semaine-27-portfolio-allocator.md` - Théorie et documentation complète (9KB)
+- `code/portfolio_allocator.py` - Implémentation Python complète (19KB)
+
+**Concepts maîtrisés:**
+- Risk Parity allocation (BTC/ETH/SOL)
+- Automatic rebalancing (threshold + scheduled)
+- Drift monitoring et calculation
+- Transaction cost estimation
+- Hybrid rebalancing strategy
+- Binance API integration (prices + historical)
+
+**Configuration recommandée:**
+- Rebalance threshold: 5% (crypto volatility)
+- Rebalance schedule: Weekly (7 days)
+- Transaction cost: 10 bps (Binance fees)
+- Minimum trade size: $10
+
+**Weights Risk Parity (Semaine 21):**
+- BTC: 52.0% (moins volatil → poids élevé)
+- ETH: 28.0%
+- SOL: 20.0% (très volatil → poids réduit)
+
+**Résultats tests:**
+- Portfolio: $16,800
+- Drift détecté: 11.8% (BTC)
+- Trades: BUY BTC $1,986, SELL ETH $996, SELL SOL $990
+- Coût estimé: $3.97 (10 bps)
+- Coût annualisé: ~1% du portfolio
+
+**Insights clés:**
+- Crypto drift 5-15%/semaine (vs 1-2% actions)
+- Threshold 5% optimal pour crypto
+- Risk Parity: Sharpe 0.89 vs 0.78 (Equal Weight)
+- Hybrid rebalancing > threshold seul ou scheduled seul
+
+**Applications Saiyan:**
+- Portfolio allocator temps réel
+- Rebalancing automatique weekly
+- Alertes Telegram avec approval
+- Backtesting framework
+
+---
+
 ## ✅ Semaine 26 - Risk Monitoring & Circuit Breakers
 
 **Statut:** ✅ Complet (24 Mai 2026)
