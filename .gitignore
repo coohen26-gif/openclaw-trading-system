@@ -1,1 +1,6 @@
 logs/
+learning/venv/
+__pycache__/
+*.pyc
+*.png
+learning/data/*.csv
