@@ -289,15 +289,16 @@ def backtest_strategy(df: pd.DataFrame, initial_capital: float = 10000) -> Dict:
     
     for i in range(strategy.hmm_lookback, len(df)):
         subset = df.iloc[:i+1]
-        signal = strategy.generate_signal(subset)
+        signal = strategy.generate_signal(subset, 'BTC/USDT')
         
         # Check if we should exit current position
         if position is not None:
             current_price = df['close'].iloc[i]
             entry_price = position['entry_price']
             
-            # Check stop loss
+            # Check exits based on direction
             if position['direction'] == 'LONG':
+                # LONG: SL below, TP above
                 if current_price <= position['stop_loss']:
                     pnl = (current_price - entry_price) / entry_price * position['size']
                     capital += pnl
@@ -320,6 +321,38 @@ def backtest_strategy(df: pd.DataFrame, initial_capital: float = 10000) -> Dict:
                     
                 elif i - position['entry_idx'] >= position['max_holding_days']:
                     pnl = (current_price - entry_price) / entry_price * position['size']
+                    capital += pnl
+                    trades.append({
+                        'exit_reason': 'time_exit',
+                        'pnl': pnl,
+                        'exit_price': current_price
+                    })
+                    position = None
+            
+            else:  # SHORT
+                # SHORT: SL above, TP below
+                if current_price >= position['stop_loss']:
+                    pnl = (entry_price - current_price) / entry_price * position['size']
+                    capital += pnl
+                    trades.append({
+                        'exit_reason': 'stop_loss',
+                        'pnl': pnl,
+                        'exit_price': current_price
+                    })
+                    position = None
+                    
+                elif current_price <= position['take_profit']:
+                    pnl = (entry_price - current_price) / entry_price * position['size']
+                    capital += pnl
+                    trades.append({
+                        'exit_reason': 'take_profit',
+                        'pnl': pnl,
+                        'exit_price': current_price
+                    })
+                    position = None
+                    
+                elif i - position['entry_idx'] >= position['max_holding_days']:
+                    pnl = (entry_price - current_price) / entry_price * position['size']
                     capital += pnl
                     trades.append({
                         'exit_reason': 'time_exit',

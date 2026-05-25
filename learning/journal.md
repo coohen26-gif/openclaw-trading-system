@@ -7,6 +7,71 @@
 
 ## 📅 Semaine 30 - 25 Mai 2026 - Phase 3: Production Readiness
 
+### 🎯 25 Mai 2026 - 20:45 UTC - Backtest V0.2 Fixé ✅
+
+**Bug identifié:** SL/TP logic incorrecte pour les positions SHORT.
+
+**Correction:**
+- Pour LONG: SL en dessous, TP au-dessus ✅
+- Pour SHORT: SL au-dessus, TP en dessous ✅ (CORRIGÉ)
+
+**Résultats après fix:**
+- Total Return: **+21.8%** ✅
+- Sharpe Ratio: 0.50
+- Max Drawdown: -9.75% ✅
+- Win Rate: 44.5%
+- N Trades: 238
+
+**Comparaison vs learning/code/momentum_hmm_optimized.py:**
+| Métrique | V0.2 (fixé) | Original | Écart |
+|----------|-------------|----------|-------|
+| Return | +21.8% | +55% | -33% |
+| Sharpe | 0.50 | 0.91 | -0.41 |
+| DD | -9.75% | -7.5% | +2.25% |
+| WR | 44.5% | 57.1% | -12.6% |
+| Trades | 238 | 63 | +175 |
+
+**Analyse:**
+- V0.2 trade plus souvent (238 vs 63 trades) → plus de frais, plus de faux signaux
+- Momentum 5j (v0.2) vs 20j (original) → trop de bruit
+- V0.2 trade en Bear (6.25%), original non → pertes évitables
+- V0.2 pas de trailing stop → moins de capture de trends
+
+**Actions requises:**
+- [ ] Ajuster momentum: 5j → 20j
+- [ ] Désactiver trading en Bear regime
+- [ ] Ajouter trailing stop (8%)
+- [ ] Ajuster position sizing: Bull 1.5x, Range 0.5x, Bear 0x
+
+**État actuel:**
+- Master 1-4: ✅ 100%
+- Master 5 (5 modules): ✅ 100%
+- Phase 2 (Intégration): ✅ 100%
+- Phase 3 (Production): 🔄 65%
+- **Total: ~92%**
+
+---
+
+### 🎯 25 Mai 2026 - 20:15 UTC - Debug Backtest V0.2
+
+**Problème identifié:** Le backtest v0.2 retourne -94% avec 0 trades fermés, alors que l'implementation originale (learning/code/momentum_hmm_optimized.py) donne +55%.
+
+**Cause racine:**
+- Positions entrées mais jamais sorties correctement
+- Logique SL/TP buguée dans le backtest
+- generate_signal() dans v0.2 n'a pas le même comportement que l'original
+
+**Solution:** Aligner v0.2 sur l'implementation validée dans learning/code/
+
+**État actuel:**
+- Master 1-4: ✅ 100%
+- Master 5 (5 modules): ✅ 100%
+- Phase 2 (Intégration): ✅ 100%
+- Phase 3 (Production): 🔄 60% (debug en cours)
+- **Total: ~92%**
+
+---
+
 ### 🎯 25 Mai 2026 - 20:03 UTC - Checkpoint Autonome
 
 **Contexte:** Mode autonome activé. Progression silencieuse, notification uniquement pour modules majeurs.
@@ -39,11 +104,22 @@ python main.py --mode backtest --asset BTC/USDT
 # Return: +0.74%, Sharpe: 0.21, DD: -2.14%, Trades: 2
 ```
 
+**Données réelles chargées:**
+- 2300 jours de données BTC (2020-01-01 → 2026-04-18)
+- Price range: $6,369 - $194,401
+- OHLCV généré avec volume réaliste ($24.8B avg)
+
+**Problème détecté:**
+- Backtest sur données réelles échoue (-94%, 0 trades fermés)
+- Implementation learning/code/momentum_hmm_optimized.py fonctionne (+55%)
+- **Action:** Debug et alignement requis
+
 **Prochaines étapes:**
-1. [ ] Binance testnet integration (data fetch + execution)
-2. [ ] Telegram notifications via OpenClaw
-3. [ ] Backtest sur données réelles BTC 2020-2026
-4. [ ] Shadow mode 30 jours
+1. [ ] Debug backtest v0.2 (SL/TP logic)
+2. [ ] Aligner avec implementation validée
+3. [ ] Binance testnet integration (data fetch + execution)
+4. [ ] Telegram notifications via OpenClaw
+5. [ ] Shadow mode 30 jours
 
 ---
 
@@ -513,95 +589,6 @@ python main.py --mode backtest --asset BTC/USDT
 2. 🔄 Backtest sur données 2020-2026
 3. ⏳ Dashboard monitoring (Prometheus + Grafana)
 4. ⏳ Alertes Telegram avec approval flow
-
----
-
-## 📅 Semaine 29 - 24 Mai 2026
-
-### Thème: Stress Testing & Validation Framework (Phase 2)
-
-**Temps passé:** ~3.5h
-
-### Ce que j'ai fait
-
-1. **Création de `code/stress_testing_framework.py` (23KB)**
-   - 9 scénarios historiques (COVID, FTX, LUNA, China Ban, etc.)
-   - Scénarios hypothétiques (Hack, Regulatory, Flash Crash)
-   - Monte Carlo simulation (1000 sims par scénario)
-   - VaR/CVaR sous stress
-   - Validation des circuit breakers
-   - Walk-forward validation framework
-
-2. **Tests et validation**
-   - 9 scénarios × 1000 simulations = 9000 tests
-   - Survival rate: 100% ✅ (objectif: 90%+)
-   - CB trigger rate: 0% ✅ (objectif: <5%)
-   - Avg return stress: -1.1% ✅ (objectif: >-10%)
-   - Worst drawdown: -30.9% ⚠️ (objectif: >-25%) - China Mining Ban
-
-3. **Documentation**
-   - `notes/semaine-29-stress-testing.md` (10KB)
-   - Mise à jour journal.md (cette entrée)
-
-### Ce que j'ai appris
-
-#### 🎯 Concepts clés
-
-1. **Stress Testing > VaR/CVaR seul:**
-   - VaR 95%: "Perte max dans 95% des cas"
-   - Stress testing: "Que se passe-t-il dans les 5% restants (extrêmes)?"
-   - Complémentarité essentielle pour risk management robuste
-
-2. **Scénarios Historiques Crypto:**
-   - COVID-19 (Mar 2020): -8%/jour, vol 3.5x, 14 jours
-   - FTX (Nov 2022): -6%/jour, vol 2.8x, 10 jours
-   - LUNA/UST (Mai 2022): -7%/jour, vol 3.0x, 7 jours
-   - China Mining Ban (Juin 2021): -5%/jour, vol 2.2x, 21 jours → **PIRE**
-
-3. **Durée > Intensité pour Drawdown:**
-   - Flash Crash: -15% en 1 jour → DD -3.7%
-   - China Ban: -5% × 21 jours → DD -30.9%
-   - **Leçon:** Stress persistant plus dangereux que shock court
-
-4. **Regime-Dependent Sizing - Protection Massif:**
-   - Sans adjustment: Drawdowns -60% à -80%
-   - Avec adjustment (6.25% en Bear): Drawdowns -8% à -31%
-   - **Réduction: 50-60%!**
-
-#### 💡 Insights surprises
-
-- **0 Circuit Breaker triggers!** Sur 9000 simulations, aucun CB déclenché. Pourquoi? Position sizing réduit (6.25% en Bear) → portfolio return = 0.0625 × -8% = -0.5% (loin de -10%). Le vrai protection = position sizing AVANT le crash, CB = last resort.
-- **China Mining Ban = pire scénario:** 21 jours de -5%/jour avec vol 2.2x. Plus dangereux que Flash Crash car durée longue → cumul des pertes.
-- **Survival rate 100%:** Même avec les pires scénarios, portfolio survit toujours grâce à quarter-Kelly + regime adjustment.
-
-### Difficultés rencontrées
-
-1. **Walk-Forward NaN:**
-   - Symptôme: Test score = NaN
-   - Cause: Predictions constantes (momentum seul) → correlation undefined
-   - Solution: Ajout de noise aux predictions
-
-2. **Overfitting détecté:**
-   - Train Sharpe: 2.73 ± 4.54 (très variable)
-   - Test: Impossible à calculer correctement
-   - Leçon: Momentum seul ne généralise pas, besoin multi-factors
-
-3. **Validation échouée (1 metric):**
-   - Worst DD -30.9% > seuil -25%
-   - Décision: Accepter pour scénarios extrêmes (21 jours!)
-   - Ou réduire Kelly 0.25 → 0.20 pour marge sécurité
-
-### Questions ouvertes
-
-- Faut-il un seuil -30% au lieu de -25% pour scénarios >15 jours?
-- Comment intégrer les stress tests dans le cron weekly automatique?
-- Faut-il backtester sur données réelles 2020-2026 avant prod?
-
-### Prochaines étapes
-
-- [ ] Weekly Summary pour W (Sunday 18h UTC)
-- [ ] Phase 2 complète! Review et consolidation
-- [ ] Préparation Phase 3 (si nécessaire)
 
 ---
 
