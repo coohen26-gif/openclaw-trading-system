@@ -53,11 +53,30 @@
 - Take Profit: 22%
 - Trailing Stop: 16%
 
-3. **Création de `notes/semaine-30-momentum-hmm-optimization.md` (6KB)**
-   - Analyse détaillée des résultats
-   - Insights et hypothèses
-   - Tests additionnels recommandés
-   - Prochaines étapes
+3. **Création de `code/momentum_multi_asset.py` (23KB)**
+   - Momentum + HMM sur 3 assets (BTC, ETH, SOL)
+   - Allocation Risk Parity (BTC 52%, ETH 28%, SOL 20%)
+   - Rebalancing hebdomadaire
+
+4. **Backtest Multi-Asset (BTC+ETH+SOL)**
+
+**Single-Asset BTC:**
+- Return: +2%, Sharpe: 0.49, DD: -1.0%, Trades: 40
+
+**Multi-Asset:**
+- Return: 0%, Sharpe: 0.17, DD: -0.7%, Trades: 63
+- Exit: 56% stop loss, 38% TP, 6% trailing
+
+**Verdict:** ❌ Multi-asset underperforme. Risk Parity dilue les positions, HMM partagé ne capture pas régimes spécifiques.
+
+5. **Documentation**
+   - `notes/semaine-30-momentum-hmm-optimization.md` (6KB)
+   - `notes/semaine-30-multi-asset-backtest.md` (6KB)
+   - Mise à jour journal.md (cette entrée)
+
+6. **Git commit + push**
+   - 7 fichiers (code, notes, données)
+   - Commit: "Phase 3: Momentum + HMM optimization + multi-asset backtest"
 
 ### Insights Clés
 
@@ -72,6 +91,10 @@
 
 4. **Trailing stops efficaces:** 16% des exits via trailing → capture de trends prolongés.
 
+5. **Multi-Asset avec Risk Parity échoue:** Return 0% vs +2% single-asset. Risk Parity dilue les positions, HMM partagé inadapté.
+
+6. **Diversification ≠ Performance:** Pour momentum strategies, concentration sur meilleurs signaux > diversification.
+
 ### Recommendations
 
 **Configuration optimisée (à tester):**
@@ -83,8 +106,8 @@
 ### Prochaines Étapes
 
 **Priorité P0:**
-- [ ] Tester configuration conservatrice (position sizing réduit)
-- [ ] Backtest multi-asset BTC+ETH+SOL avec Risk Parity
+- [ ] **Décision architecture:** Single-asset BTC vs Multi-asset dynamique (momentum-weighted)
+- [ ] Tester configuration conservatrice (position sizing: Bull 0.75x, VolBull 0.5x, Range 0.25x)
 - [ ] Walk-forward validation (train 2020-2023, test 2024-2026)
 
 **Priorité P1:**
