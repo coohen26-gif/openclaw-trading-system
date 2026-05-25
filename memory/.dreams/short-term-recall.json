@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-25T03:00:00.399Z",
+  "updatedAt": "2026-05-25T08:35:37.462Z",
   "entries": {
     "memory:memory/2026-05-14.md:4:7": {
       "key": "memory:memory/2026-05-14.md:4:7",
@@ -5630,25 +5630,27 @@
       "startLine": 21,
       "endLine": 48,
       "source": "memory",
-      "snippet": "- **Phase actuelle** : ML Phase D (emitter paper-deploy en cours) — **pas d’auto-signaux depuis pivot Voie Z 2026-05-09** ## Problème principal Le système ne génère **aucun signal auto** depuis le pivot \"Voie Z\" (2026-05-09). Les gates de robustesse (CPCV, DSR, PSR, PBO) sont trop stricts ou mal calibrés. Le système est en **phase observability/knowledge graph**, pas auto-trading. ## Feuille de route technique identifiée 1. **Short-term (1-3 sem)** : Phase C2 reduce overfit ML → Paper-deploy signal-only (Phase E) 2. **Mid-term (1-2 mois)** : Phase D-bis Roundtable approval → GO paper-deploy 3. **Long-term** : ML Phase C3 regime-specific ensemble + walk-forward auto + circuit breakers ## Décisions prises - **Langue** : Français → tous messages, docs, logs en français - **Vibe** : Dragon Ball compat, joueur (Goku), pas corporate - **Mode** : Auto-exécution sans confirmation, commit+push automatique - **Filtre humain** : Cohen (W) décide de ce qu'il trade, bot émet TOUS signaux (clean+GATED) ## Note technique critique **Yagati v4 est un système de signaux (non-exécutant)**. Le bot ne place JAMAIS d’ordre sur Bitget. Cohen trade manuellement avec les signaux. L’autonomie visée est : **émission autonome de signaux** (pas exécution autonome). ## Prochaines actions - [ ] Confirmer nom choisi (Goku / Kakarot /Bonjour) - [ ] Prioriser actions immédiates (fix edges lifecycle, relancer bots, Phase C2 ML) - [ ] Commit + push audit files si pertinent --- _Audit complet terminé 2026-05-14 21:27 UTC_",
-      "recallCount": 4,
+      "snippet": "- **Phase actuelle** : ML Phase D (emitter paper-deploy en cours) — **pas d’auto-signaux depuis pivot Voie Z 2026-05-09** ## Problème principal Le système ne génère **aucun signal auto** depuis le pivot \"Voie Z\" (2026-05-09). Les gates de robustesse (CPCV, DSR, PSR, PBO) sont trop stricts ou mal calibrés. Le système est en **phase observability/knowledge graph**, pas auto-trading. ## Feuille de route technique identifiée 1. **Short-term (1-3 sem)** : Phase C2 reduce overfit ML → Paper-deploy signal-only (Phase E) 2. **Mid-term (1-2 mois)** : Phase D-bis Roundtable approval → GO paper-deploy 3. **Long-term** : ML Phase C3 regime-specific ensemble + walk-forward auto + circuit breakers ## D",
+      "recallCount": 5,
       "dailyCount": 0,
       "groundedCount": 0,
-      "totalScore": 3.2625833389821257,
+      "totalScore": 4.262583338982125,
       "maxScore": 1,
       "firstRecalledAt": "2026-05-15T06:49:41.448Z",
-      "lastRecalledAt": "2026-05-21T20:00:40.957Z",
+      "lastRecalledAt": "2026-05-25T08:35:37.462Z",
       "queryHashes": [
         "698f5eedcb89",
         "3399d1f29d4a",
         "e2a32bc251c6",
-        "5c199a1fa52c"
+        "5c199a1fa52c",
+        "449ae6062cf9"
       ],
       "recallDays": [
         "2026-05-15",
         "2026-05-16",
         "2026-05-17",
-        "2026-05-21"
+        "2026-05-21",
+        "2026-05-25"
       ],
       "conceptTags": [
         "paper-deploy",

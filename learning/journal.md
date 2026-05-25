@@ -13,8 +13,86 @@
 - Master 1-4: 100% ✅
 - Master 5 (5 modules): 100% ✅
 - Phase 2 (Intégration): 100% ✅
-- Phase 3 (Production): 35% 🔄
-- **Total: ~88%**
+- Phase 3 (Production): 40% 🔄
+- **Total: ~89%**
+
+---
+
+## 📅 25 Mai 2026 - 12:15 UTC - Mean Reversion v6 ÉCHEC ✅
+
+**Contexte:** Validation Mean Reversion sur données réelles BTC
+
+### Ce que j'ai fait
+
+1. **Backtest v6 sur données réelles (2337 jours BTC)**
+   - RSI: 30/70, Bollinger: 2.0σ
+   - TP: +5%, SL: -4%, Time Exit: 7j
+   - Position: 5%
+
+2. **Résultats catastrophiques**
+
+**Train (2020-2023):**
+- Return: **-7.91%** ❌
+- Sharpe: **-0.74** ❌
+- DD: -8.49%
+- Win Rate: **36.8%** ❌
+- N Trades: 136
+
+**Test (2024-2026):**
+- Return: **-0.63%** ❌
+- Sharpe: **-0.12** ❌
+- DD: -2.77%
+- Win Rate: **45.9%** ❌
+- N Trades: 74
+
+**Exit Reasons (Test):**
+- TP: 28%, SL: 39%, Time: 32%
+- Ratio TP/SL = 0.72 (devrait être >1.0)
+
+3. **Analyse des causes**
+   - Mean reversion pure = trop de faux signaux
+   - Crypto peut rester oversold/overbought longtemps
+   - Pas de catalyseur pour timing de réversion
+   - 32% time exits = signaux faibles
+
+4. **Comparaison vs Momentum+HMM**
+
+| Métrique | Momentum+HMM | Mean Rev v6 | Gagnant |
+|----------|--------------|-------------|---------|
+| Return | +55% | -0.63% | Momentum ✅ |
+| Sharpe | 0.91 | -0.12 | Momentum ✅ |
+| Win Rate | 57.1% | 45.9% | Momentum ✅ |
+| Max DD | -7.5% | -2.77% | Mean Rev ✅ |
+
+5. **Documentation**
+   - `notes/semaine-30-mean-reversion-v6-results.md` (4.4KB)
+   - Mise à jour journal.md (cette entrée)
+
+### Décision: RETOUR À MOMENTUM + HMM
+
+**Mean Reversion pure = ABANDONNÉE** ❌
+
+**Pourquoi:**
+- Edge statistique insuffisant (WR <50%)
+- Plus de SL que de TP
+- Underperforme Momentum+HMM sur TOUS critères sauf DD
+
+**Stratégie validée pour v0.2:**
+- **Momentum + HMM (4 régimes)**
+- Single-Asset BTC
+- Return: +55%, Sharpe: 0.91, WR: 57%, DD: -7.5%
+
+### Prochaines Étapes
+
+**Priorité P0 (24h):**
+- [ ] Abandonner Mean Reversion, focus Momentum+HMM
+- [ ] Finaliser configuration Momentum+HMM (walk-forward déjà validé)
+- [ ] Commencer intégration production (Binance API, dashboard)
+
+**Priorité P1 (48-72h):**
+- [ ] Telegram Signaler integration
+- [ ] Risk monitoring temps réel
+- [ ] Documentation complète v0.2
 
 ---
 
