@@ -13,49 +13,84 @@
 - Master 1-4: 100% ✅
 - Master 5 (5 modules): 100% ✅
 - Phase 2 (Intégration): 100% ✅
-- Phase 3 (Production): 15% 🔄
-- **Total: ~87%**
+- Phase 3 (Production): 35% 🔄
+- **Total: ~88%**
 
 ---
 
-## 📅 25 Mai 2026 - 00:03 UTC - Démarrage Phase 3
+## 📅 25 Mai 2026 - 04:00 à 05:30 UTC - Session Momentum Optimization
 
-**Contexte:** Lundi 25 Mai 2026, 00:03 UTC. Mode autonome activé par W.
+**Contexte:** Lundi 25 Mai 2026, 04:00-05:30 UTC. Mode autonome activé par W.
 
 ### Ce que j'ai fait
 
-1. **Création de `code/binance_connector.py` (16KB)**
-   - Connecteur Binance API complet
-   - Mode testnet (paper trading) fonctionnel
-   - Fetch OHLCV historique avec pagination automatique
-   - Exécution d'ordres simulée (testnet)
-   - Gestion des positions et balance
-   - Rate limiting intégré
+1. **Création de `code/momentum_hmm_optimized.py` (23KB)**
+   - Filtre HMM 4 régimes (Bull, Bear, Range, Volatile Bull)
+   - Position sizing dynamique (0.5x - 1.5x Kelly selon régime)
+   - Stops/take-profit adaptatifs par régime
+   - Trailing stop mechanism
+   - Time-based exit (20j max)
 
-2. **Téléchargement données historiques 2020-2026**
-   - **BTC/USDT:** 56,065 candles (1h) depuis 2020-01-01 ✅
-   - **ETH/USDT:** 56,065 candles (1h) depuis 2020-01-01 ✅
-   - **SOL/USDT:** 47,281 candles (1h) depuis 2021-01-01 ✅
-   - Fichiers sauvegardés dans `learning/data/`
+2. **Backtest sur données réelles BTC 2020-2026 (2337 jours)**
 
-3. **Tests validés**
-   - Connection Binance OK ✅
-   - Fetch ticker temps réel ✅
-   - Historical range fetch ✅
-   - Test trading (buy/sell) ✅
-   - Position tracking ✅
+**Baseline (sans HMM, sans trailing):**
+- Total Return: +36%
+- Sharpe: 0.91
+- Max Drawdown: -5.1%
+- Win Rate: 56.9%
+- N Trades: 65
+
+**Optimisé (HMM + trailing stops):**
+- Total Return: **+55%** ✅ (+53% vs baseline)
+- Sharpe: 0.91 (inchangé)
+- Max Drawdown: **-7.5%** ⚠️ (+47% vs baseline)
+- Win Rate: 57.1% (stable)
+- N Trades: 63
+
+**Exit Reasons:**
+- Time Exit (20j): 38%
+- Stop Loss: 24%
+- Take Profit: 22%
+- Trailing Stop: 16%
+
+3. **Création de `notes/semaine-30-momentum-hmm-optimization.md` (6KB)**
+   - Analyse détaillée des résultats
+   - Insights et hypothèses
+   - Tests additionnels recommandés
+   - Prochaines étapes
+
+### Insights Clés
+
+1. **HMM Filter - Return ↑ mais Drawdown ↑ aussi:** Contre-intuitif! Le filtre augmente le return (+55% vs +36%) mais aussi le drawdown (-7.5% vs -5.1%).
+
+2. **Causes probables:**
+   - Position sizing trop agressif (1.5x Kelly en Bull!)
+   - Stops trop larges (SL -12% en Volatile Bull)
+   - Lag de détection HMM (lookback 60j trop long)
+
+3. **38% de time exits:** Presque 40% des trades sortent par temps sans atteindre TP/SL → signaux peu conviants ou stops mal calibrés.
+
+4. **Trailing stops efficaces:** 16% des exits via trailing → capture de trends prolongés.
+
+### Recommendations
+
+**Configuration optimisée (à tester):**
+- Position sizing: Bull 0.75x (18.75%), VolBull 0.5x (12.5%), Range 0.25x (6.25%)
+- Stops: Bull SL -5%/TP +15%, VolBull SL -8%/TP +20%
+- HMM lookback: 30j (vs 60j actuel)
+- Confidence threshold: 60% minimum
 
 ### Prochaines Étapes
 
 **Priorité P0:**
-- [ ] Créer backtest engine avec données réelles 2020-2026
-- [ ] Backtester stratégies (Fat Tail Hunter, HMM Regime, Momentum)
-- [ ] Comparer performance vs données simulées
+- [ ] Tester configuration conservatrice (position sizing réduit)
+- [ ] Backtest multi-asset BTC+ETH+SOL avec Risk Parity
+- [ ] Walk-forward validation (train 2020-2023, test 2024-2026)
 
 **Priorité P1:**
-- [ ] Dashboard monitoring (metrics clés)
-- [ ] Alertes Telegram avec approval flow
-- [ ] Documentation Phase 3
+- [ ] Intégrer dans system-saiyan/v0.2
+- [ ] Dashboard monitoring
+- [ ] Alertes Telegram
 
 ---
 
