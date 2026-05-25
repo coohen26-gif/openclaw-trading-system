@@ -1,0 +1,18 @@
+# Système Saiyan v0.1 - Dependencies
+# Python 3.12+
+
+# Data & Numerics
+pandas>=2.2.0
+numpy>=1.26.0
+
+# Crypto Data
+ccxt>=4.2.0
+
+# Metals Data
+yfinance>=0.2.40
+
+# Machine Learning
+scikit-learn>=1.4.0
+
+# Utilities
+requests>=2.31.0

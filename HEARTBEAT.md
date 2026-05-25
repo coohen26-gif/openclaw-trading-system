@@ -37,6 +37,23 @@ Développer MON système trading concurrent de Yagati (Yagati v4 est INTouchable
 ## 📝 Notes du Jour
 _(À remplir pendant la journée)_
 
+### 2026-05-23 - Lancement Cursus Académique Quant Trader 🎓
+
+**Décision W:** "Je te laisse te former en autonome met des crons si il faut mais apprends tout le programme des vrai traders"
+
+**Cursus lancé:** 2026-05-23  
+**Mode:** Autonome, progression dans `learning/`
+
+#### Semaine 1 (✅ Terminée)
+- **Module:** Licence 1 - Analyse des returns BTC
+- **Découverte clé:** Returns BTC ≠ loi normale (kurtosis 22.34 en 5min!)
+- **Insight:** Fat tails = feature, pas bug. Modèles classiques échouent.
+- **Fichiers:** `learning/notes/semaine-01-returns-btc.md`, `learning/journal.md`
+
+#### Semaine 2 (📋 À venir)
+- **Module:** GARCH Volatility Modeling
+- **Objectif:** Modéliser et prédire la volatilité
+
 ### 2026-05-17 00:38 UTC - Scan HEARTBEAT
 - ✅ Signal LONG BTC/USDT détecté (confidence 64/100)
 - ✅ Telegram envoyé avec succès à W

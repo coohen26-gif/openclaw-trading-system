@@ -1,0 +1,199 @@
+{
+  "metadata": {
+    "created_at": "2026-05-21T20:04:00Z",
+    "last_updated": "2026-05-21T20:04:00Z",
+    "total_positions": 7,
+    "open_positions": 7,
+    "closed_positions": 0,
+    "capital_paper": 10000,
+    "currency": "EUR"
+  },
+  "summary": {
+    "by_asset": {
+      "BTCUSDT": { "count": 3, "status": "OPEN" },
+      "ETHUSDT": { "count": 3, "status": "OPEN" },
+      "SOLUSDT": { "count": 1, "status": "OPEN" }
+    },
+    "pnl_unrealized": {
+      "total_eur": 0,
+      "total_percent": 0,
+      "note": "Requires live price feed for calculation"
+    },
+    "win_rate": {
+      "value": null,
+      "note": "No positions closed yet"
+    },
+    "avg_rr_ratio": 3.18,
+    "avg_confidence": 73
+  },
+  "positions": [
+    {
+      "id": "BTC-20260518-0141",
+      "timestamp": "2026-05-18T01:41:00Z",
+      "asset": "BTCUSDT",
+      "type": "LONG",
+      "entry_price": 76832,
+      "tp_price": 78828,
+      "sl_price": 75505,
+      "r_r_ratio": 1.50,
+      "confidence": 69,
+      "status": "OPEN",
+      "pnl_percent": null,
+      "pnl_eur": null,
+      "duration_hours": null,
+      "tags": ["RANGE", "RSI_OVERSOLD", "BB_LOWER"],
+      "indicators": {
+        "rsi": 23.0,
+        "adx": 56.6,
+        "volume_ratio": 1.18,
+        "bb_lower": 76456,
+        "bb_middle": 78835,
+        "bb_upper": 81214
+      }
+    },
+    {
+      "id": "ETH-20260518-0141",
+      "timestamp": "2026-05-18T01:41:00Z",
+      "asset": "ETHUSDT",
+      "type": "LONG",
+      "entry_price": 2112,
+      "tp_price": 2178,
+      "sl_price": 2105,
+      "r_r_ratio": 8.30,
+      "confidence": 83,
+      "status": "OPEN",
+      "pnl_percent": null,
+      "pnl_eur": null,
+      "duration_hours": null,
+      "tags": ["RANGE", "RSI_OVERSOLD", "BB_LOWER", "CONVICTION"],
+      "indicators": {
+        "rsi": 26.8,
+        "adx": 40.2,
+        "volume_ratio": 0.74,
+        "bb_lower": 2124,
+        "bb_middle": 2175,
+        "bb_upper": 2226
+      }
+    },
+    {
+      "id": "BTC-20260518-0312",
+      "timestamp": "2026-05-18T03:12:00Z",
+      "asset": "BTCUSDT",
+      "type": "LONG",
+      "entry_price": 76966,
+      "tp_price": 78835,
+      "sl_price": 75527,
+      "r_r_ratio": 1.30,
+      "confidence": 73,
+      "status": "OPEN",
+      "pnl_percent": null,
+      "pnl_eur": null,
+      "duration_hours": null,
+      "tags": ["RANGE", "RSI_OVERSOLD", "BB_LOWER"],
+      "indicators": {
+        "rsi": 23.0,
+        "adx": 56.6,
+        "volume_ratio": 1.18,
+        "bb_lower": 76456,
+        "bb_middle": 78835,
+        "bb_upper": 81214
+      }
+    },
+    {
+      "id": "ETH-20260518-0312",
+      "timestamp": "2026-05-18T03:12:00Z",
+      "asset": "ETHUSDT",
+      "type": "LONG",
+      "entry_price": 2120,
+      "tp_price": 2175,
+      "sl_price": 2095,
+      "r_r_ratio": 2.12,
+      "confidence": 70,
+      "status": "OPEN",
+      "pnl_percent": null,
+      "pnl_eur": null,
+      "duration_hours": null,
+      "tags": ["RANGE", "RSI_OVERSOLD", "BB_LOWER"],
+      "indicators": {
+        "rsi": 26.8,
+        "adx": 40.2,
+        "volume_ratio": 0.74,
+        "bb_lower": 2124,
+        "bb_middle": 2175,
+        "bb_upper": 2226
+      }
+    },
+    {
+      "id": "BTC-20260519-0010",
+      "timestamp": "2026-05-19T00:10:00Z",
+      "asset": "BTCUSDT",
+      "type": "LONG",
+      "entry_price": 76950,
+      "tp_price": 78800,
+      "sl_price": 75500,
+      "r_r_ratio": 1.34,
+      "confidence": 70,
+      "status": "OPEN",
+      "pnl_percent": null,
+      "pnl_eur": null,
+      "duration_hours": null,
+      "tags": ["RANGE", "RSI_OVERSOLD", "BB_LOWER", "ASIAN_SESSION"],
+      "indicators": {
+        "rsi": null,
+        "adx": null,
+        "volume_ratio": null,
+        "bb_lower": null,
+        "bb_middle": null,
+        "bb_upper": null
+      }
+    },
+    {
+      "id": "ETH-20260519-0010",
+      "timestamp": "2026-05-19T00:10:00Z",
+      "asset": "ETHUSDT",
+      "type": "LONG",
+      "entry_price": 2115,
+      "tp_price": 2178,
+      "sl_price": 2087,
+      "r_r_ratio": 7.47,
+      "confidence": 75,
+      "status": "OPEN",
+      "pnl_percent": null,
+      "pnl_eur": null,
+      "duration_hours": null,
+      "tags": ["RANGE", "RSI_OVERSOLD", "BB_LOWER", "CONVICTION", "ASIAN_SESSION"],
+      "indicators": {
+        "rsi": 24.4,
+        "adx": null,
+        "volume_ratio": null,
+        "bb_lower": null,
+        "bb_middle": null,
+        "bb_upper": null
+      }
+    },
+    {
+      "id": "SOL-20260519-0810",
+      "timestamp": "2026-05-19T08:10:00Z",
+      "asset": "SOLUSDT",
+      "type": "LONG",
+      "entry_price": 94.82,
+      "tp_price": null,
+      "sl_price": null,
+      "r_r_ratio": null,
+      "confidence": 72,
+      "status": "OPEN",
+      "pnl_percent": null,
+      "pnl_eur": null,
+      "duration_hours": null,
+      "tags": ["BULL", "RSI_OVERSOLD", "ASIAN_SESSION"],
+      "indicators": {
+        "rsi": null,
+        "adx": null,
+        "volume_ratio": null,
+        "bb_lower": null,
+        "bb_middle": null,
+        "bb_upper": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "version": "0.1",
+  "name": "Système Saiyan",
+  "description": "Prototype Paper-Trade - Metals (60%) + Crypto (25%)",
+  
+  "capital": 10000,
+  
+  "trading_rules": {
+    "min_confidence": 60,
+    "max_trades_per_day": 5,
+    "position_size_min": 2.0,
+    "position_size_max": 5.0,
+    "stop_loss_pct": 2.5,
+    "take_profit_pct": 1.0,
+    "trading_fee_pct": 0.1,
+    "slippage_pct": 0.05
+  },
+  
+  "assets": {
+    "crypto": [
+      "BTC/USDT",
+      "ETH/USDT",
+      "SOL/USDT",
+      "BNB/USDT",
+      "XRP/USDT"
+    ],
+    "metals": [
+      "GC=F",
+      "SI=F",
+      "PL=F",
+      "PA=F"
+    ]
+  },
+  
+  "timeframes": ["1h", "4h", "1d"],
+  
+  "strategies": {
+    "primary": "mean_reversion",
+    "secondary": "momentum",
+    "weights": {
+      "mean_reversion": 0.75,
+      "momentum": 0.25
+    }
+  },
+  
+  "feature_engineering": {
+    "rsi_period": 14,
+    "rsi_oversold": 25,
+    "rsi_overbought": 75,
+    "bollinger_period": 20,
+    "bollinger_std": 2.5,
+    "volatility_period": 20,
+    "momentum_period": 14,
+    "volume_surge_period": 20
+  },
+  
+  "signal_scoring": {
+    "technical_weight": 0.40,
+    "momentum_weight": 0.25,
+    "volume_weight": 0.20,
+    "volatility_weight": 0.15
+  },
+  
+  "risk_management": {
+    "position_sizing": "confidence_based",
+    "max_daily_loss_pct": 5.0,
+    "cooldown_hours": 1
+  },
+  
+  "backtest": {
+    "walk_forward_splits": 3,
+    "min_trades_for_validation": 30
+  },
+  
+  "notifications": {
+    "telegram_enabled": true,
+    "use_openclaw": true,
+    "send_daily_summary": true
+  },
+  
+  "logging": {
+    "level": "INFO",
+    "file": "logs/saiyan_v0.1.log"
+  }
+}
