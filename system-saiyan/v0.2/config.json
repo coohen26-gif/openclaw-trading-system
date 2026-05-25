@@ -1,0 +1,186 @@
+{
+  "version": "0.2",
+  "name": "Système Saiyan",
+  "description": "Production Ready - Momentum+HMM + Risk Management + Multi-Asset",
+  "status": "development",
+  
+  "capital": 10000,
+  
+  "trading_rules": {
+    "min_confidence": 60,
+    "max_trades_per_day": 3,
+    "max_open_positions": 3,
+    "position_size_min": 2.0,
+    "position_size_max": 8.0,
+    "stop_loss_pct": 4.0,
+    "take_profit_pct": 8.0,
+    "trailing_stop_pct": 3.0,
+    "time_exit_days": 20,
+    "trading_fee_pct": 0.1,
+    "slippage_pct": 0.05
+  },
+  
+  "assets": {
+    "primary": "BTC/USDT",
+    "multi_asset": [
+      "BTC/USDT",
+      "ETH/USDT",
+      "SOL/USDT"
+    ],
+    "allocation_method": "risk_parity"
+  },
+  
+  "risk_parity_weights": {
+    "BTC": 0.52,
+    "ETH": 0.28,
+    "SOL": 0.20
+  },
+  
+  "rebalancing": {
+    "method": "hybrid",
+    "threshold_pct": 5.0,
+    "schedule_days": 7,
+    "min_trade_size": 10
+  },
+  
+  "timeframes": ["1h", "4h", "1d"],
+  
+  "strategies": {
+    "primary": "momentum_hmm",
+    "secondary": "mean_reversion",
+    "weights": {
+      "momentum_hmm": 0.85,
+      "mean_reversion": 0.15
+    }
+  },
+  
+  "hmm_config": {
+    "n_regimes": 4,
+    "regimes": ["Bull", "Bear", "Range", "Volatile Bull"],
+    "lookback_days": 60,
+    "confidence_threshold": 0.6,
+    "retrain_frequency": "weekly"
+  },
+  
+  "regime_sizing": {
+    "Bull": {
+      "kelly_multiplier": 0.75,
+      "position_pct": 18.75,
+      "stop_loss_pct": 5.0,
+      "take_profit_pct": 15.0,
+      "max_holding_days": 10
+    },
+    "Bear": {
+      "kelly_multiplier": 0.25,
+      "position_pct": 6.25,
+      "stop_loss_pct": 3.0,
+      "take_profit_pct": 8.0,
+      "max_holding_days": 3
+    },
+    "Range": {
+      "kelly_multiplier": 0.25,
+      "position_pct": 6.25,
+      "stop_loss_pct": 4.0,
+      "take_profit_pct": 6.0,
+      "max_holding_days": 5
+    },
+    "Volatile Bull": {
+      "kelly_multiplier": 0.50,
+      "position_pct": 12.5,
+      "stop_loss_pct": 8.0,
+      "take_profit_pct": 20.0,
+      "max_holding_days": 7
+    }
+  },
+  
+  "feature_engineering": {
+    "momentum_period": 5,
+    "rsi_period": 14,
+    "rsi_oversold": 35,
+    "rsi_overbought": 65,
+    "bollinger_period": 20,
+    "bollinger_std": 2.5,
+    "volatility_period": 20,
+    "volume_surge_period": 20,
+    "hmm_lookback": 60
+  },
+  
+  "risk_monitoring": {
+    "var_confidence": 0.95,
+    "cvar_confidence": 0.95,
+    "var_method": "historical",
+    "rolling_window_days": 30,
+    "circuit_breakers": {
+      "level1_warning": {
+        "daily_pnl_pct": -3.6,
+        "drawdown_pct": -10,
+        "action": "alert"
+      },
+      "level2_reduce": {
+        "daily_pnl_pct": -5.0,
+        "drawdown_pct": -15,
+        "action": "reduce_50_pct"
+      },
+      "level3_stop": {
+        "daily_pnl_pct": -8.0,
+        "drawdown_pct": -20,
+        "action": "stop_new_trades"
+      },
+      "level4_kill": {
+        "daily_pnl_pct": -10.0,
+        "drawdown_pct": -25,
+        "action": "kill_switch"
+      }
+    }
+  },
+  
+  "stress_testing": {
+    "enabled": true,
+    "frequency": "weekly",
+    "n_scenarios": 9,
+    "n_simulations": 1000,
+    "survival_threshold": 0.90,
+    "cb_trigger_threshold": 0.05,
+    "max_drawdown_threshold": -0.25
+  },
+  
+  "backtest": {
+    "walk_forward_enabled": true,
+    "train_test_split": "2020-01-01_2023-12-31|2024-01-01_2026-12-31",
+    "min_trades_for_validation": 30,
+    "target_metrics": {
+      "sharpe_min": 0.8,
+      "win_rate_min": 0.50,
+      "max_drawdown_max": -0.15,
+      "profit_factor_min": 1.3
+    }
+  },
+  
+  "notifications": {
+    "telegram_enabled": true,
+    "use_openclaw": true,
+    "send_daily_summary": true,
+    "daily_summary_time_utc": "18:00",
+    "regime_change_alert": true,
+    "circuit_breaker_alert": true,
+    "weekly_summary": {
+      "enabled": true,
+      "day": "sunday",
+      "time_utc": "18:00"
+    }
+  },
+  
+  "binance": {
+    "testnet": true,
+    "api_key_env": "BINANCE_TESTNET_API_KEY",
+    "api_secret_env": "BINANCE_TESTNET_SECRET",
+    "sandbox_url": "https://testnet.binance.vision"
+  },
+  
+  "logging": {
+    "level": "INFO",
+    "file": "logs/saiyan_v0.2.log",
+    "rotation": "daily",
+    "retention_days": 30
+  }
+}
