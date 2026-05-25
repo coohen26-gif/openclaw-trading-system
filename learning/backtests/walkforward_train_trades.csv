@@ -1,0 +1,2 @@
+entry_date,exit_date,entry_price,exit_price,pnl,pnl_pct,hold_days,regime,exit_reason
+2020-01-20 00:00:00+00:00,2023-12-31 00:00:00+00:00,8657.642578125,42265.1875,3.881835571127659,388.1835571127659,1441,bull,end_of_period

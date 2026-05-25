@@ -1,0 +1,2 @@
+entry_date,exit_date,entry_price,exit_price,pnl,pnl_pct,hold_days,regime,exit_reason
+2024-01-29 00:00:00+00:00,2026-05-24 00:00:00+00:00,43288.24609375,76981.125,0.7783378156112131,77.83378156112131,846,range,end_of_period

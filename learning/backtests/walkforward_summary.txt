@@ -1,0 +1,53 @@
+SAIYAN TRADING SYSTEM - WALK-FORWARD VALIDATION
+Date: 2026-05-25T07:15:55.338812
+======================================================================
+
+CONFIGURATION:
+Train Period: 2020-01-01 → 2023-12-31
+Test Period:  2024-01-01 → 2026-05-25
+Initial Capital: $10000
+Kelly Fraction: 0.25
+
+REGIME CONFIG:
+  bull: Kelly=0.75, SL=-0.05, TP=0.15, MaxHold=20d
+  volatile_bull: Kelly=0.5, SL=-0.08, TP=0.2, MaxHold=20d
+  range: Kelly=0.25, SL=-0.04, TP=0.08, MaxHold=20d
+  bear: Kelly=0.1, SL=-0.03, TP=0.05, MaxHold=10d
+
+======================================================================
+RESULTS:
+
+TRAIN (2020-2023) (2020-01-01 → 2023-12-31):
+  Return: +21.0%
+  Sharpe: 0.40
+  Max DD: -23.7%
+  Win Rate: 100.0%
+  Trades: 1
+  Exit Reasons: {'end_of_period': 1}
+
+TEST (2024-2026) (2024-01-01 → 2026-05-24):
+  Return: +21.1%
+  Sharpe: 0.43
+  Max DD: -25.7%
+  Win Rate: 100.0%
+  Trades: 1
+  Exit Reasons: {'end_of_period': 1}
+
+FULL (2020-2026) (2020-01-01 → 2026-05-24):
+  Return: +42.7%
+  Sharpe: 0.40
+  Max DD: -23.7%
+  Win Rate: 100.0%
+  Trades: 1
+  Exit Reasons: {'end_of_period': 1}
+
+
+======================================================================
+VALIDATION CHECKS:
+  ❌ Sharpe > 1.0
+  ❌ Max DD < -15%
+  ✅ Win Rate > 50%
+  ✅ Total Return > 20%
+  ✅ Calmar > 1.0
+
+OVERALL: ❌ FAILED
