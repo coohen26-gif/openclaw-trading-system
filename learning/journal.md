@@ -82,16 +82,24 @@
 - Single-Asset BTC
 - Return: +55%, Sharpe: 0.91, WR: 57%, DD: -7.5%
 
+**Re-validation Momentum+HMM (25 Mai 12:30 UTC):**
+- Baseline (sans HMM): +36%, Sharpe 0.91, DD -5.1%, WR 56.9%
+- Optimisé (HMM + trailing): **+55%**, Sharpe 0.91, DD -7.5%, WR 57.1%
+- Exit reasons: TP 22%, SL 24%, Trailing 16%, Time 38%
+- **Verdict:** ✅ VALIDÉ POUR PRODUCTION
+
 ### Prochaines Étapes
 
 **Priorité P0 (24h):**
-- [ ] Abandonner Mean Reversion, focus Momentum+HMM
-- [ ] Finaliser configuration Momentum+HMM (walk-forward déjà validé)
-- [ ] Commencer intégration production (Binance API, dashboard)
+- [x] Abandonner Mean Reversion, focus Momentum+HMM
+- [x] Re-valider Momentum+HMM sur données réelles
+- [ ] Finaliser configuration production (params optimisés)
+- [ ] Commencer intégration Binance API (testnet)
 
 **Priorité P1 (48-72h):**
 - [ ] Telegram Signaler integration
-- [ ] Risk monitoring temps réel
+- [ ] Risk monitoring temps réel (VaR/CVaR + circuit breakers)
+- [ ] Dashboard monitoring (Prometheus + Grafana)
 - [ ] Documentation complète v0.2
 
 ---
