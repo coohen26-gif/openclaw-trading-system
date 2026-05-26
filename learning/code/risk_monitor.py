@@ -67,6 +67,11 @@ class RiskMetrics:
     drawdown: float
     circuit_breaker_level: CircuitBreakerLevel
     timestamp: datetime
+    # Derivatives risk metrics (Master 5)
+    portfolio_vega: Optional[float] = None
+    portfolio_delta: Optional[float] = None
+    iv_25d: Optional[float] = None
+    iv_skew: Optional[float] = None
 
 
 @dataclass
@@ -392,6 +397,132 @@ class RiskMonitor:
         recent_returns = returns[-window:]
         return np.std(recent_returns) * np.sqrt(365)
     
+    # ========== DERIVATIVES RISK MONITORING (Master 5) ==========
+    
+    def check_vega_exposure(self, portfolio_vega: float, iv_change_pct: float, portfolio_value: float) -> Optional[Alert]:
+        """
+        Check Vega exposure against IV moves.
+        
+        Crypto IV can double in days → massive losses on short options.
+        Rule: Max -5% portfolio loss per 1% IV drop.
+        
+        Args:
+            portfolio_vega: Portfolio vega exposure (dollar value per 1% IV change)
+            iv_change_pct: Implied volatility change in percentage points
+            portfolio_value: Total portfolio value
+            
+        Returns:
+            Alert if vega limit exceeded, None otherwise
+        """
+        max_vega_loss = portfolio_value * 0.05  # 5% limit per 1% IV move
+        estimated_loss = portfolio_vega * (iv_change_pct / 100)
+        
+        if abs(estimated_loss) > max_vega_loss:
+            return Alert(
+                level=AlertLevel.CRITICAL,
+                message=f"Vega exposure too high: ${estimated_loss:,.2f} loss for {iv_change_pct:.1f}% IV move",
+                metric="vega_limit",
+                value=estimated_loss,
+                threshold=max_vega_loss,
+                timestamp=datetime.now()
+            )
+        return None
+    
+    def check_delta_exposure(self, portfolio_delta: float, portfolio_value: float) -> Optional[Alert]:
+        """
+        Check portfolio net delta exposure.
+        
+        Rule: Net delta should not exceed ±50% of portfolio value.
+        
+        Args:
+            portfolio_delta: Net portfolio delta (dollar value)
+            portfolio_value: Total portfolio value
+            
+        Returns:
+            Alert if delta limit exceeded, None otherwise
+        """
+        max_delta = portfolio_value * 0.5  # 50% limit
+        
+        if abs(portfolio_delta) > max_delta:
+            direction = "LONG" if portfolio_delta > 0 else "SHORT"
+            return Alert(
+                level=AlertLevel.WARNING,
+                message=f"Net {direction} delta too high: ${portfolio_delta:,.2f} (limit: ${max_delta:,.2f})",
+                metric="delta_limit",
+                value=abs(portfolio_delta),
+                threshold=max_delta,
+                timestamp=datetime.now()
+            )
+        return None
+    
+    def check_iv_percentile(self, iv_current: float, iv_percentile: float) -> Optional[Alert]:
+        """
+        Check if IV is at extreme levels.
+        
+        Rule: Avoid short options when IV > 80th percentile.
+        
+        Args:
+            iv_current: Current implied volatility (%)
+            iv_percentile: IV percentile (0-100)
+            
+        Returns:
+            Alert if IV at extreme, None otherwise
+        """
+        if iv_percentile > 80:
+            return Alert(
+                level=AlertLevel.WARNING,
+                message=f"IV at {iv_percentile:.1f}th percentile ({iv_current:.1f}%) - avoid short options",
+                metric="iv_percentile",
+                value=iv_percentile,
+                threshold=80,
+                timestamp=datetime.now()
+            )
+        return None
+    
+    def check_iv_skew(self, put_call_skew: float) -> Optional[Alert]:
+        """
+        Check IV skew (Put/Call ratio) for fear/greed signals.
+        
+        Rule: Put/Call IV > 1.3 = market fear, often followed by dips.
+        
+        Args:
+            put_call_skew: Put IV / Call IV ratio
+            
+        Returns:
+            Alert if skew indicates fear, None otherwise
+        """
+        if put_call_skew > 1.3:
+            return Alert(
+                level=AlertLevel.INFO,
+                message=f"IV skew elevated ({put_call_skew:.2f}) - market fearful, reduce risk",
+                metric="iv_skew",
+                value=put_call_skew,
+                threshold=1.3,
+                timestamp=datetime.now()
+            )
+        return None
+    
+    def update_derivatives_metrics(
+        self,
+        portfolio_vega: Optional[float] = None,
+        portfolio_delta: Optional[float] = None,
+        iv_25d: Optional[float] = None,
+        iv_skew: Optional[float] = None
+    ):
+        """
+        Update derivatives risk metrics.
+        
+        Args:
+            portfolio_vega: Portfolio vega exposure
+            portfolio_delta: Portfolio net delta
+            iv_25d: 25-day implied volatility (%)
+            iv_skew: Put/Call IV ratio
+        """
+        self._portfolio_vega = portfolio_vega
+        self._portfolio_delta = portfolio_delta
+        self._iv_25d = iv_25d
+        self._iv_skew = iv_skew
+    
     def get_risk_metrics(self) -> RiskMetrics:
         """
         Calculate all current risk metrics.
@@ -428,7 +559,11 @@ class RiskMonitor:
             daily_pnl=daily_pnl,
             drawdown=drawdown,
             circuit_breaker_level=cb_level,
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
+            portfolio_vega=getattr(self, '_portfolio_vega', None),
+            portfolio_delta=getattr(self, '_portfolio_delta', None),
+            iv_25d=getattr(self, '_iv_25d', None),
+            iv_skew=getattr(self, '_iv_skew', None)
         )
     
     def check_trading_allowed(self) -> Tuple[bool, str]:
