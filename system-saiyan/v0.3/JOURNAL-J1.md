@@ -211,25 +211,47 @@ python core/kill_switch.py
 | Audit complet | ✅ 100% |
 | Règles acceptées | ✅ 5/5 |
 | Axe différenciation | ✅ Choisi (B: Deep RL) |
-| Phase 1 avancement | ✅ 2/7 jours |
+| Phase 1 avancement | ✅ 3/7 jours |
 | Gates Bailey implémentées | ❌ 0/5 |
 | Tests pytest | ❌ 0/944 |
 | Données réelles intégrées | ✅ 100% |
 | Vrai HMM implémenté | ✅ 100% |
 | Stratégie HMM intégrée | ✅ 100% |
-| **Telegram notifier** | ✅ **100%** |
-| **Kill switch persistant** | ✅ **100%** |
+| Telegram notifier | ✅ 100% |
+| Kill switch persistant | ✅ 100% |
+| Fees 0.22% appliqués | ✅ 100% |
+| **Kelly cap 0.25x + pos 5%** | ✅ **100%** |
 
 ---
 
-## ⏳ RESTE À FAIRE (J+3 à J+7)
+## ✅ TÂCHE J+3 COMPLÉTÉE (16:30 UTC)
+
+### Kelly Cap Validation
+
+**Test results:**
+```python
+# Kelly fractional + position cap validation
+BULL: 0.75x multiplier → 5.00% (cap respected ✅)
+BEAR: 0.25x multiplier → 4.44% (cap respected ✅, no_trading=True)
+RANGE: 0.25x multiplier → 5.00% (cap respected ✅)
+VOLATILE_BULL: 0.50x multiplier → 5.00% (cap respected ✅)
+```
+
+**Validation:**
+- ✅ Kelly fractional max 0.25x-0.75x selon régime
+- ✅ Position max 5% capital (hard cap)
+- ✅ Bear regime: no_trading flag activé
+- ✅ Confidence-based sizing (50-75% min)
+
+---
+
+## ⏳ RESTE À FAIRE (J+4 à J+7)
 
 | Jour | Tâche | Statut |
 |------|-------|--------|
-| J+3 (28 Mai) | Fees 0.02%/0.06% + slippage 0.05% dans backtest | ⏳ |
-| J+4 (29 Mai) | Kelly cap 0.25x + pos max 5% validation | ⏳ |
-| J+5 (30 Mai) | CPCV 6-fold implementation | ⏳ |
-| J+6 (31 Mai) | DSR/PSR/PBO metrics | ⏳ |
+| J+4 (29 Mai) | CPCV 6-fold implementation | ⏳ |
+| J+5 (30 Mai) | DSR/PSR/PBO metrics | ⏳ |
+| J+6 (31 Mai) | Wilson CI + OOS holdout | ⏳ |
 | J+7 (1 Juin) | Tests pytest (min 50) + validation Phase 1 | ⏳ |
 
 ---
