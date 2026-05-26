@@ -51,7 +51,128 @@
 
 ---
 
-_Maj 2026-05-25 - Dream Processing Session 3 (Recherche Nocturne) + 4 Idées Originales + État de l'Art Concurrentiel_
+_Maj 2026-05-26 - Dream Processing Session 4 + 4 Idées Originales + État de l'Art Concurrentiel + Roadmap Révisée_
+
+---
+
+## 🌙 Dream Processing 2026-05-26 - Session 4 (Recherche Nocturne)
+
+### 📚 Source Analysée
+
+- `memory/2026-05-25-recherche-nocturne.md` - Recherche complète sur stratégies, HMM, WFO, et bots open source
+
+---
+
+### 🎯 Insights Majeurs
+
+**Insight #1:** HMM + WFO = Edge Majeur ⭐⭐⭐
+- HMM détecte 2-3 régimes (Low Vol / High Vol / Crisis)
+- WFO réentraîne weekly sans lookahead bias
+- Résultat: **+30-50% performance** vs modèle unique rigide
+
+**Insight #2:** Trading-as-Git pour Transparence ⭐⭐
+- OpenAlice (4,014⭐) innové avec "Trading-as-Git"
+- Chaque signal = commit avec message justifié
+- Utilisateur approve/reject/amend via Inbox Telegram
+
+**Insight #3:** Swarm > Agent Unique ⭐⭐
+- Vibe-Trading (8,435⭐) utilise architecture multi-agents
+- 4 rôles: Research + Risk + Execution + Monitor
+- Voting system + heartbeats live + parallélisation
+
+---
+
+### 🚀 4 Nouvelles Idées Originales pour Système Saiyan
+
+#### Idée #1: "Regime Oracle" (HMM + Router) ⭐⭐⭐ P0
+**Concept:** HMM lightweight détecte régime → routage dynamique vers stratégie appropriée
+**Implémentation:**
+```
+HMM (3 états) → Low Vol: Mean Reversion
+              → High Vol: Momentum Breakout
+              → Crisis: Risk-Off + Cash
+```
+**Innovation:** Pool de stratégies + router intelligent (pas stratégie statique)
+**Effort:** Moyen | **Impact:** Élevé | **Temps:** 2-3 semaines
+
+#### Idée #2: "Trading Git" + Inbox Décisions ⭐⭐ P1
+**Concept:** Chaque signal génère un "trade commit" → notification Telegram avec boutons approve/reject/amend
+**Workflow:**
+1. Signal détecté → Commit créé (stratégie, confiance, SL, TP)
+2. Inbox push → Utilisateur vote
+3. Execution si approved → Historique git-like
+**Innovation:** Versionning des décisions + contrôle utilisateur
+**Effort:** Faible | **Impact:** Moyen | **Temps:** 3-5 jours
+
+#### Idée #3: "Swarm Micro-Agents" Spécialisés ⭐⭐ P2
+**Concept:** Équipe de 4 agents spécialisés qui collaborent
+**Rôles:** Research, Risk, Execution, Monitor
+**Innovation:** Voting system + heartbeats live + parallélisation
+**Effort:** Élevé | **Impact:** Élevé | **Temps:** 4-6 semaines
+
+#### Idée #4: "Shadow Mode" + Auto-Learning ⭐ P3
+**Concept:** Bot tourne en fictif 2-4 semaines → auto-analyse erreurs → propose ajustements
+**Innovation:** Auto-improvement avant risque capital réel
+**Effort:** Moyen | **Impact:** Moyen | **Temps:** 2-3 semaines
+
+---
+
+### 📊 État de l'Art Concurrentiel 2026-05-26
+
+| Projet | Stars | Tech | Points Forts |
+|--------|-------|------|--------------|
+| **Vibe-Trading** | 8,435 | Python | Swarm multi-agents, Research Goals, MCP, heartbeats live |
+| **OpenAlice** | 4,014 | TypeScript | Trading-as-Git, UTA multi-brokers, guard pipeline |
+| **ai-crypto-bot** | 12 | Python | LLM agents, arbitrage, grid, DCA |
+
+**Faiblesses repérées:**
+- Crypto-centric (peu equities/forex)
+- Backtesting basique (pas WFO, pas HMM)
+- Pas d'adaptation dynamique régimes
+- Documentation production limitée
+
+**Notre différentiateur:** HMM + WFO + Regime-Adaptive par design
+
+---
+
+### 🔗 Connections Inattendues
+
+1. **HMM × Shadow Mode:** HMM peut détecter si shadow performance dégrade → trigger auto-retrain
+2. **Git Trading × Swarm:** Chaque agent peut créer des commits → Orchestrator consolide
+3. **WFO × Multi-Stratégies:** Chaque stratégie du pool a son propre WFO schedule
+
+---
+
+### 🗺️ Roadmap Révisée (Post-Dream 26 Mai)
+
+| Priorité | Module | Temps | Statut |
+|----------|--------|-------|--------|
+| **P0** | Regime Oracle (HMM + Router) | 2-3 sem | 🆕 Confirmé |
+| **P0** | Fat Tail Hunter | 1-2 sem | ✅ Existant |
+| **P0** | Momentum Fade Detector | 1-2 sem | ✅ Existant |
+| **P1** | Trading Git + Inbox | 3-5 jours | 🆕 Ajouté |
+| **P1** | Skewness Gate | 3-5 jours | ✅ Existant |
+| **P1** | GARCH Position Sizing | 1 sem | ✅ Existant |
+| **P1** | ML Confidence Engine (XGBoost) | 2-3 sem | ✅ Existant |
+| **P2** | Swarm Micro-Agents | 4-6 sem | 🆕 Ajouté |
+| **P2** | Session × Vol Matrix | 4-6 jours | ✅ Existant |
+| **P2** | Regime P&L Tracker | 3-4 jours | ✅ Existant |
+| **P2** | Microstructure Executor | 1-2 sem | ✅ Existant |
+| **P3** | Shadow Mode + Auto-Learning | 2-3 sem | 🆕 Ajouté |
+
+---
+
+### 📄 Fichier de Référence
+
+- `memory/dreaming/archive/2026-05/2026-05-25-recherche-nocturne.md` - Document complet dream processing session 4
+
+---
+
+### 🧠 Leçon Clé
+
+> **"Les marchés ne sont ni purement trend-following ni purement mean-reverting. L'edge vient de savoir quel régime domine et trader en conséquence."**
+
+Notre système Saiyan doit être **adaptatif par design**, pas statique.
 
 ---
 
@@ -1282,15 +1403,11 @@ Confidence = (Technicals × 0.35) + (On-Chain × 0.25) + (Sentiment × 0.20) + (
 
 ---
 
-## Promoted From Short-Term Memory (2026-05-25)
+## Promoted From Short-Term Memory (2026-05-26)
 
-<!-- openclaw-memory-promotion:memory:memory/2026-05-19.md:10:10 -->
-- **Signaux détectés:** 3 signaux LONG [score=0.897 recalls=0 avg=0.620 source=memory/2026-05-19.md:10-10]
-<!-- openclaw-memory-promotion:memory:memory/2026-05-19.md:15:15 -->
-- **Pattern clé:** 100% des signaux entre 00:00-08:00 UTC (session asiatique) [score=0.897 recalls=0 avg=0.620 source=memory/2026-05-19.md:15-15]
-<!-- openclaw-memory-promotion:memory:memory/2026-05-19.md:25:28 -->
-- | Priorité | Action | Temps | Statut | |----------|--------|-------|--------| | P1 | ⚡ Optimiser fréquence heartbeat (15min 00-04h UTC) | 1h | ⏳ À faire | | P1 | 🎯 Bonus R/R >5 (+10 confidence, tag CONVICTION) | 1-2h | ⏳ À faire | [score=0.897 recalls=0 avg=0.620 source=memory/2026-05-19.md:25-28]
-<!-- openclaw-memory-promotion:memory:memory/2026-05-18.md:5:7 -->
-- **Assets Scanned:** BTC/USDT, ETH/USDT, SOL/USDT **Indicators:** HMM Regimes, Bollinger Bands, RSI, ADX, Volume **Threshold:** ≥60/100 confidence [score=0.890 recalls=0 avg=0.620 source=memory/2026-05-18.md:5-7]
-<!-- openclaw-memory-promotion:memory:memory/2026-05-18.md:11:14 -->
-- | Asset | Price | 24h Change | RSI | Signal | |-------|-------|------------|-----|--------| | BTC | ~$80,185 | -1.62% | Neutral | ❌ None | | ETH | ~$2,372 | - | Neutral | ❌ None | [score=0.890 recalls=0 avg=0.620 source=memory/2026-05-18.md:11-14]
+<!-- openclaw-memory-promotion:memory:memory/2026-05-20.md:5:6 -->
+- **Session:** cron:068438a2-a6b8-4d3b-88e2-346ce3e09159 **Mode:** Introspectif et créatif [score=0.883 recalls=0 avg=0.620 source=memory/2026-05-20.md:5-6]
+<!-- openclaw-memory-promotion:memory:memory/2026-05-20.md:10:10 -->
+- **Pattern temporel validé:** [score=0.883 recalls=0 avg=0.620 source=memory/2026-05-20.md:10-10]
+<!-- openclaw-memory-promotion:memory:memory/2026-05-20.md:15:15 -->
+- **Décision:** Mode "Session Asiatique" activé [score=0.883 recalls=0 avg=0.620 source=memory/2026-05-20.md:15-15]

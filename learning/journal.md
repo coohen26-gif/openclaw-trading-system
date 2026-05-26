@@ -93,7 +93,47 @@ python utils/telegram_notifier.py
 
 ---
 
-### 🎯 26 Mai 2026 - 00:21 UTC - Telegram Notifier ✅
+### 🎯 26 Mai 2026 - 04:09 UTC - Telegram Notifier ✅
+
+**Contexte:** Notifications Telegram pour signaux et alertes.
+
+**Ce que j'ai fait:**
+1. Créé `utils/telegram_notifier.py` (10KB)
+2. Testé connection API ✅
+3. Testé signaux et alertes ✅
+
+**Features:**
+- Trading signals (entry, stop, target, regime)
+- System alerts (risk levels, circuit breakers)
+- Daily/weekly summaries
+- Auto signal ID increment
+- State persistence (data/telegram_state.json)
+
+**Test:**
+```bash
+python utils/telegram_notifier.py
+# ✅ Telegram connection OK
+# ✅ Signal #1 prepared
+# ✅ Alert #1 prepared
+```
+
+**Signal Format:**
+- 🟢/🔴 ENTRY signals with entry/SL/TP/position/regime/confidence
+- Rationale included
+- Auto-calculated risk/reward percentages
+
+**Alert Levels:**
+- INFO (ℹ️), WARNING (⚠️), CRITICAL (🚨), EMERGENCY (🆘)
+- Metric + value + threshold tracking
+
+**Prochaines étapes:**
+- [ ] Intégrer dans main.py (mode paper/live)
+- [ ] Configurer templates de signaux
+- [ ] Shadow mode avec notifications
+
+---
+
+### 🎯 26 Mai 2026 - 00:21 UTC - Telegram Notifier (Référence)
 
 **Contexte:** Notifications Telegram pour signaux et alertes.
 
