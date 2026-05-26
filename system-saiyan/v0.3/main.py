@@ -6,8 +6,11 @@ Production Ready - Données réelles Binance (pas de np.random!)
 Features:
 - Données réelles BTC/USDT 2020-2026 depuis CSV Binance
 - Data loader avec cache
-- Fees 0.12% round-trip appliqués
+- Fees 0.22% round-trip appliqués (0.02% maker + 0.06% taker + 0.05% slippage)
 - Backtest sur données réelles
+- Vrai HMM avec hmmlearn (Baum-Welch, rolling 180j)
+- Kill switch persistant
+- Telegram notifier (dedup + rate-limit)
 
 Usage:
     python main.py --mode backtest --asset BTC/USDT --period 2020-2026
@@ -50,7 +53,7 @@ class SaiyanSystem:
         self.config = self._load_config(config_path)
         self.initialized = False
         self.data_cache: Dict[str, pd.DataFrame] = {}
-        self.fees_round_trip = 0.0012  # 0.12% round-trip (0.06% taker x2)
+        self.fees_round_trip = 0.0022  # 0.22% round-trip (0.02% maker + 0.06% taker + 0.05% slippage x2)
         
     def _load_config(self, config_path: str) -> dict:
         """Load configuration from JSON file."""

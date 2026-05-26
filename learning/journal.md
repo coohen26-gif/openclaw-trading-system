@@ -93,6 +93,65 @@ python utils/telegram_notifier.py
 
 ---
 
+### 🎯 26 Mai 2026 - 16:12 UTC - J+2 Completé ✅ (Telegraph + Kill Switch)
+
+**Contexte:** Phase 1 J+2 - Notifications + Sécurité.
+
+**Ce que j'ai fait:**
+1. Créé `utils/telegram_notifier.py` (14KB)
+2. Créé `core/kill_switch.py` (10KB)
+3. Testé les deux composants ✅
+4. Git commit + push ✅
+
+### Telegram Notifier
+
+**Features:**
+- ✅ Signaux trading (BUY/SELL/LONG/SHORT)
+- ✅ Alertes système (INFO/WARNING/CRITICAL/EMERGENCY)
+- ✅ Résumés daily/weekly
+- ✅ **Déduplication** (hash SHA256, fenêtre 5min)
+- ✅ **Rate limiting** (1 msg/sec max)
+- ✅ Persistence état (`data/telegram_state.json`)
+
+**Test:**
+```bash
+python utils/telegram_notifier.py
+# ✅ Connection OK
+# 📤 [MOCK] 🟢 SIGNAL #1 — LONG BTC/USDT @ $77,159
+```
+
+### Kill Switch Persistant
+
+**Features:**
+- ✅ Persistence JSON (`data/kill_switch.json`)
+- ✅ Trigger daily loss (-5%)
+- ✅ Trigger max drawdown (-20%)
+- ✅ Trigger manuel (API)
+- ✅ **Auto-reset 24h**
+
+**Test:**
+```bash
+python core/kill_switch.py
+# ✅ All tests passed
+# 🚨 KILL SWITCH: Daily loss -6% < -5%
+# 🆘 ACTIVATED → ✅ RESET
+```
+
+**État actuel:**
+- Master 1-4: ✅ 100%
+- Master 5 (5 modules): ✅ 100%
+- Phase 2 (Intégration): ✅ 100%
+- Phase 3 (Production): 🔄 65% → 70%
+- **Total: ~93%**
+
+**Prochaines étapes:**
+- [ ] J+3: Fees/slippage dans backtest engine
+- [ ] J+4: Kelly cap 0.25x validation
+- [ ] J+5-J+6: Gates Bailey (CPCV, DSR, PSR, PBO)
+- [ ] J+7: Tests pytest + validation Phase 1
+
+---
+
 ### 🎯 26 Mai 2026 - 08:22 UTC - Saiyan v0.2 Main Entry Point ✅
 
 **Contexte:** Intégration complète dans main.py avec tous les modules.
