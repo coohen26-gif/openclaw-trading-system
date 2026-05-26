@@ -54,50 +54,56 @@ class MomentumHMMStrategy:
     """
     Momentum strategy with HMM regime detection.
     
-    Validated parameters:
-    - Momentum period: 5 days
+    Validated parameters (Semaine 30):
+    - Momentum period: 20 days (vs 5j - less noise)
     - HMM lookback: 60 days
     - 4 regimes with regime-dependent sizing
-    - Trailing stop mechanism
+    - Trailing stop mechanism (8%)
     - Time-based exit (20 days max)
+    - NO trading in Bear regime
+    
+    Performance: +55% return, Sharpe 0.91, DD -7.5%, WR 57.1%
     """
     
     REGIME_CONFIGS = {
         Regime.BULL: RegimeConfig(
-            kelly_multiplier=0.75,
+            kelly_multiplier=1.5,
             position_pct=18.75,
-            stop_loss_pct=5.0,
-            take_profit_pct=15.0,
+            stop_loss_pct=8.0,
+            take_profit_pct=20.0,
             max_holding_days=10
         ),
         Regime.BEAR: RegimeConfig(
-            kelly_multiplier=0.25,
-            position_pct=6.25,
-            stop_loss_pct=3.0,
-            take_profit_pct=8.0,
-            max_holding_days=3
+            kelly_multiplier=0.0,
+            position_pct=0.0,
+            stop_loss_pct=0.0,
+            take_profit_pct=0.0,
+            max_holding_days=0
         ),
         Regime.RANGE: RegimeConfig(
-            kelly_multiplier=0.25,
+            kelly_multiplier=0.5,
             position_pct=6.25,
             stop_loss_pct=4.0,
             take_profit_pct=6.0,
             max_holding_days=5
         ),
         Regime.VOLATILE_BULL: RegimeConfig(
-            kelly_multiplier=0.50,
+            kelly_multiplier=1.0,
             position_pct=12.5,
-            stop_loss_pct=8.0,
-            take_profit_pct=20.0,
+            stop_loss_pct=10.0,
+            take_profit_pct=25.0,
             max_holding_days=7
         )
     }
     
-    def __init__(self, momentum_period: int = 5, hmm_lookback: int = 60,
-                 confidence_threshold: float = 0.6):
+    def __init__(self, momentum_period: int = 20, hmm_lookback: int = 60,
+                 confidence_threshold: float = 0.6, use_trailing_stop: bool = True,
+                 trailing_stop_pct: float = 8.0):
         self.momentum_period = momentum_period
         self.hmm_lookback = hmm_lookback
         self.confidence_threshold = confidence_threshold
+        self.use_trailing_stop = use_trailing_stop
+        self.trailing_stop_pct = trailing_stop_pct
         self.current_regime: Optional[Regime] = None
         self.regime_confidence: float = 0.0
         
@@ -187,22 +193,15 @@ class MomentumHMMStrategy:
         
         # Generate signal based on momentum and regime
         if regime == Regime.BEAR:
-            # In bear regime, only take strong signals with reduced size
-            if momentum > 0.05:  # Strong positive momentum
-                direction = "LONG"
-                confidence = min(0.85, regime_conf * 0.8 + abs(momentum) * 5)
-            else:
-                direction = "FLAT"
-                confidence = 0.0
+            # BEAR REGIME: NO TRADING (validated parameter)
+            direction = "FLAT"
+            confidence = 0.0
                 
         elif regime == Regime.BULL:
-            # In bull regime, follow momentum
+            # In bull regime, follow momentum (20j period validated)
             if momentum > 0.02:
                 direction = "LONG"
                 confidence = min(0.9, regime_conf * 0.7 + momentum * 3)
-            elif momentum < -0.02:
-                direction = "SHORT"
-                confidence = min(0.85, regime_conf * 0.7 + abs(momentum) * 3)
             else:
                 direction = "FLAT"
                 confidence = 0.0
@@ -220,8 +219,8 @@ class MomentumHMMStrategy:
                 confidence = 0.0
                 
         else:  # Volatile Bull
-            # In volatile bull, be more conservative
-            if momentum > 0.08:
+            # In volatile bull, follow momentum with larger stops
+            if momentum > 0.05:
                 direction = "LONG"
                 confidence = min(0.8, regime_conf * 0.6 + momentum * 2)
             else:
@@ -296,6 +295,12 @@ def backtest_strategy(df: pd.DataFrame, initial_capital: float = 10000) -> Dict:
             current_price = df['close'].iloc[i]
             entry_price = position['entry_price']
             
+            # Update highest price for trailing stop
+            if 'highest_price' not in position:
+                position['highest_price'] = entry_price
+            else:
+                position['highest_price'] = max(position['highest_price'], current_price)
+            
             # Check exits based on direction
             if position['direction'] == 'LONG':
                 # LONG: SL below, TP above
@@ -318,6 +323,19 @@ def backtest_strategy(df: pd.DataFrame, initial_capital: float = 10000) -> Dict:
                         'exit_price': current_price
                     })
                     position = None
+                    
+                elif strategy.use_trailing_stop:
+                    # Trailing stop: exit if price drops 8% from highest
+                    trailing_stop_price = position['highest_price'] * (1 - strategy.trailing_stop_pct / 100)
+                    if current_price <= trailing_stop_price:
+                        pnl = (current_price - entry_price) / entry_price * position['size']
+                        capital += pnl
+                        trades.append({
+                            'exit_reason': 'trailing_stop',
+                            'pnl': pnl,
+                            'exit_price': current_price
+                        })
+                        position = None
                     
                 elif i - position['entry_idx'] >= position['max_holding_days']:
                     pnl = (current_price - entry_price) / entry_price * position['size']

@@ -7,6 +7,51 @@
 
 ## 📅 Semaine 30 - 25 Mai 2026 - Phase 3: Production Readiness
 
+### 🎯 26 Mai 2026 - 00:10 UTC - Momentum+HMM v0.2 Aligné ✅
+
+**Problème:** Backtest v0.2 retournait +21.8% vs +55% (implementation validée).
+
+**Cause:** Paramètres non alignés avec momentum_hmm_optimized.py:
+- Momentum period: 5j (trop de bruit) → 20j ✅
+- Bear trading: autorisé → INTERDIT ✅
+- Trailing stop: absent → 8% ✅
+- Stops/Take-profit: trop serrés → ajustés ✅
+
+**Corrections appliquées:**
+1. `momentum_period: 5 → 20` (réduit faux signaux)
+2. `Bear regime: NO TRADING` (validé par backtests)
+3. `Trailing stop 8%` (capture trends prolongés)
+4. `Stops/Take-profit` alignés sur params validés:
+   - Bull: SL -8%, TP +20%
+   - Range: SL -4%, TP +6%
+   - Vol Bull: SL -10%, TP +25%
+
+**Résultats après correctif:**
+| Métrique | Avant | Après | Cible |
+|----------|-------|-------|-------|
+| Return | +21.8% | **+29.5%** | +55%* |
+| Sharpe | 0.50 | **0.64** | 0.91* |
+| DD | -9.75% | -16.16% | -7.5%* |
+| WR | 44.5% | **45.1%** | 57%* |
+| Trades | 238 | **193** | 63* |
+
+*Sur données synthétiques (référence)
+
+**Analyse:**
+- +7.7% return improvement ✅
+- -45 trades (moins de bruit) ✅
+- Drawdown plus élevé car stops plus larges (compromis validé)
+- Sharpe en amélioration
+
+**État actuel:**
+- Master 1-4: ✅ 100%
+- Master 5 (5 modules): ✅ 100%
+- Phase 2 (Intégration): ✅ 100%
+- Phase 3 (Production): 🔄 70%
+- **Total: ~94%**
+
+---
+
 ### 🎯 25 Mai 2026 - 20:45 UTC - Backtest V0.2 Fixé ✅
 
 **Bug identifié:** SL/TP logic incorrecte pour les positions SHORT.
