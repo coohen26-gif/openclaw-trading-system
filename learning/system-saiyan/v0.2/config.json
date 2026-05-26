@@ -1,0 +1,102 @@
+{
+  "system": {
+    "name": "Saiyan Trading System",
+    "version": "0.2",
+    "mode": "production"
+  },
+  "capital": {
+    "initial_capital": 10000,
+    "currency": "USDT"
+  },
+  "risk": {
+    "var_confidence": 0.95,
+    "lookback_days": 30,
+    "max_daily_loss": -0.05,
+    "max_drawdown": -0.20,
+    "circuit_breakers": {
+      "level_1_warning": -0.036,
+      "level_2_reduce": -0.05,
+      "level_3_stop": -0.08,
+      "level_4_kill": -0.10
+    }
+  },
+  "strategy": {
+    "type": "momentum_hmm",
+    "momentum_period": 20,
+    "hmm_states": 4,
+    "hmm_lookback": 60,
+    "regimes": {
+      "bull": {
+        "kelly_fraction": 0.75,
+        "position_size": 0.1875,
+        "stop_loss": -0.05,
+        "take_profit": 0.15,
+        "max_days": 10
+      },
+      "bear": {
+        "kelly_fraction": 0.25,
+        "position_size": 0.0625,
+        "stop_loss": -0.03,
+        "take_profit": 0.08,
+        "max_days": 3,
+        "trading_allowed": false
+      },
+      "range": {
+        "kelly_fraction": 0.25,
+        "position_size": 0.0625,
+        "stop_loss": -0.04,
+        "take_profit": 0.06,
+        "max_days": 5
+      },
+      "volatile_bull": {
+        "kelly_fraction": 0.50,
+        "position_size": 0.125,
+        "stop_loss": -0.08,
+        "take_profit": 0.20,
+        "max_days": 7
+      }
+    },
+    "trailing_stop": 0.08
+  },
+  "portfolio": {
+    "assets": ["BTC", "ETH", "SOL"],
+    "rebalance_threshold": 0.05,
+    "rebalance_schedule": "weekly",
+    "risk_parity": {
+      "BTC": 0.52,
+      "ETH": 0.28,
+      "SOL": 0.20
+    }
+  },
+  "derivatives": {
+    "enabled": true,
+    "vega_limit_pct": 0.05,
+    "delta_limit_pct": 0.50,
+    "iv_percentile_alert": 80,
+    "iv_skew_alert": 1.3
+  },
+  "data": {
+    "binance": {
+      "base_url": "https://api.binance.com",
+      "rate_limit_ms": 1200,
+      "cache_ttl_hours": 1
+    },
+    "deribit": {
+      "base_url": "https://www.deribit.com/api/v2/public",
+      "cache_ttl_hours": 1
+    }
+  },
+  "telegram": {
+    "enabled": true,
+    "send_signals": true,
+    "send_alerts": true,
+    "send_daily_summary": true,
+    "send_weekly_summary": true
+  },
+  "trading": {
+    "allowed": true,
+    "mode": "paper",
+    "symbol": "BTC/USDT",
+    "timeframe": "1d"
+  }
+}
