@@ -5,6 +5,45 @@
 
 ---
 
+## 📅 Semaine 32 - 27 Mai 2026 - Phase 4: GARCH Volatility Modeling
+
+### 🎯 27 Mai 2026 - 14:40 UTC - Lancement Semaine 2 : GARCH Volatility Modeling 🚀
+
+**Contexte:** Après la Semaine 1 (analyse des returns BTC, fat tails), passage à la modélisation de la volatilité.
+
+**Ce que j'ai fait:**
+1. Créé `learning/notes/semaine-02-garch-volatility.md` (6.5KB) - Cours complet GARCH
+2. Mis à jour ce journal avec statut Semaine 2
+
+**Concepts Clés Appris:**
+- **Hétéroscédasticité conditionnelle**: La variance des returns dépend du passé → on peut PRÉDIRE la volatilité !
+- **GARCH(1,1)**: σ²_t = α₀ + α₁·ε²_{t-1} + β₁·σ²_{t-1}
+  - α₁ = réaction aux chocs récents ("news")
+  - β₁ = persistance de la volatilité (mémoire)
+  - Typique crypto: β₁ ≈ 0.85-0.95 (très persistant!)
+- **Variantes importantes:**
+  - EGARCH: capture asymétrie (bad news > good news)
+  - GJR-GARCH: dummy pour chocs négatifs
+
+**Applications pour Système Saiyan:**
+1. **Position Sizing Dynamique**: size_t = capital_risk / (stop × volatilité_prédite)
+2. **Stops Dynamiques**: SL_distance = ATR_mult × σ_t
+3. **Filtrage Signaux**: confidence *= 0.7 si volatilité élevée
+4. **Complément HMM**: Volatilité + HMM → meilleur routing stratégique
+
+**Prochaines étapes:**
+- [ ] Installer package `arch` en Python
+- [ ] Implémenter GARCH(1,1) sur BTC 5min/1h/1D
+- [ ] Tester EGARCH pour asymétrie
+- [ ] Comparer volatilité prédite vs réalisée
+- [ ] Intégrer dans Saiyan (module `volatility/garch.py`)
+
+**État actuel:**
+- Cursus: Semaine 1 ✅, Semaine 2 🔄 En cours
+- Système Saiyan: Shadow Mode J+2/30 ✅
+
+---
+
 ## 📅 Semaine 31 - 27 Mai 2026 - Phase 3: Shadow Mode Launch
 
 ### 🎯 27 Mai 2026 - 12:30 UTC - Derivatives Integration (Vega Monitoring) ✅
