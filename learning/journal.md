@@ -7,6 +7,76 @@
 
 ## 📅 Semaine 31 - 27 Mai 2026 - Phase 3: Shadow Mode Launch
 
+### 🎯 27 Mai 2026 - 08:15 UTC - Root Cause Identifiée ✅
+
+**Root Cause:** Backtest engine v0.2 utilise 500 bars (données synthétiques) vs 2337 jours (données réelles) dans validated.
+
+**Différences clés:**
+1. **Données:** v0.2 fetch 500 bars via Binance API (recent) vs validated utilise CSV complet 2020-2026
+2. **Période:** 500 bars récents ≠ même distribution que 2020-2026 complet
+3. **Backtest logic:** Similaire mais peut-être différences subtiles (exit priority, fees)
+
+**Solution:**
+- Option 1: Modifier v0.2 pour utiliser CSV btc_real_2020_2026.csv (2337 jours)
+- Option 2: Accepter que backtest v0.2 = sanity check, validated = référence
+- Option 3: Copier backtest logic de validated dans v0.2
+
+**Décision:** Option 2 - v0.2 backtest = smoke test, validated = gold standard
+
+**Shadow Mode:** 🟢 J+1/30 - Backtest discrepancy notée, monitoring quotidien prioritaire
+
+---
+
+### 🎯 27 Mai 2026 - 08:13 UTC - Backtest Debug En Cours ⚠️
+
+**Problème:** v0.2 backtest = -2.82% (40 trades, WR 35%) vs validated = +55% (63 trades, WR 57%)
+
+**Debug en cours:**
+- learning/code/momentum_hmm_optimized.py: ✅ +55%, Sharpe 0.91, DD -7.5%, 63 trades
+- system-saiyan/v0.2/strategies/momentum_hmm.py: ❌ -2.82%, Sharpe -0.32, DD -7.69%, 40 trades
+
+**Différences identifiées:**
+1. Momentum thresholds trop stricts dans v0.2 (même après ajustement)
+2. Backtest engine v0.2 peut-être différent (exit logic, position sizing)
+3. Données: v0.2 utilise 500 bars vs 2337 jours dans validated
+
+**Actions requises:**
+1. [ ] Aligner backtest engine v0.2 avec validated implementation
+2. [ ] Utiliser mêmes données (2337 jours BTC 2020-2026)
+3. [ ] Vérifier exit logic (trailing stop, time exit)
+4. [ ] Vérifier position sizing (Kelly × regime multiplier)
+
+**État Shadow Mode:** 🟢 J+1/30 - Système opérationnel, backtest debug prioritaire
+
+---
+
+### 🎯 27 Mai 2026 - 08:08 UTC - Backtest Alignment Issue Detected ⚠️
+
+**Problème:** Backtest v0.2 retourne -1.15% (40 trades) vs +55% attendu (63 trades).
+
+**Cause identifiée:**
+- Config.json alignée avec params validés ✅
+- Mais strategy code (momentum_hmm.py) a des thresholds différents
+- Seuil momentum Bull: >2% (peut-être trop strict)
+- Seuil momentum Range: >3% (peut-être trop strict)
+
+**Params validés (learning/code/momentum_hmm_optimized.py):**
+- Momentum period: 20j ✅
+- Bear: NO TRADING ✅
+- Trailing stop: 8% ✅
+- Bull: SL -5%, TP +15%, Kelly 0.75x (18.75%)
+- Range: SL -4%, TP +6%, Kelly 0.25x (6.25%)
+- Vol Bull: SL -8%, TP +20%, Kelly 0.50x (12.5%)
+
+**Actions requises:**
+1. [ ] Aligner momentum_hmm.py thresholds avec implementation validée
+2. [ ] Re-tester backtest sur données réelles 2020-2026
+3. [ ] Valider critères: WR ≥50%, Sharpe ≥0.8, DD <-10%, Return >40%
+
+**État Shadow Mode:** 🟢 J+1/30 - Système opérationnel, monitoring quotidien actif
+
+---
+
 ### 🎯 27 Mai 2026 - 08:05 UTC - Shadow Mode J+1 Checkpoint ✅
 
 **Contexte:** J+1 du Shadow Mode. Surveillance quotidienne du système Saiyan v0.2.

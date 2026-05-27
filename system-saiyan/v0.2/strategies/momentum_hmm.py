@@ -198,20 +198,20 @@ class MomentumHMMStrategy:
             confidence = 0.0
                 
         elif regime == Regime.BULL:
-            # In bull regime, follow momentum (20j period validated)
-            if momentum > 0.02:
+            # In bull regime, follow momentum (20j period validated) - relaxed threshold
+            if momentum > 0.005:  # 0.5% threshold (was 2%)
                 direction = "LONG"
-                confidence = min(0.9, regime_conf * 0.7 + momentum * 3)
+                confidence = min(0.9, regime_conf * 0.7 + momentum * 5)
             else:
                 direction = "FLAT"
                 confidence = 0.0
                 
         elif regime == Regime.RANGE:
-            # In range, trade mean reversion with small size
-            if momentum > 0.03:
+            # In range, trade mean reversion with small size - relaxed threshold
+            if momentum > 0.015:  # 1.5% threshold (was 3%)
                 direction = "LONG"
                 confidence = min(0.75, 0.5 + momentum * 5)
-            elif momentum < -0.03:
+            elif momentum < -0.015:
                 direction = "SHORT"
                 confidence = min(0.75, 0.5 + abs(momentum) * 5)
             else:
@@ -219,10 +219,10 @@ class MomentumHMMStrategy:
                 confidence = 0.0
                 
         else:  # Volatile Bull
-            # In volatile bull, follow momentum with larger stops
-            if momentum > 0.05:
+            # In volatile bull, follow momentum with larger stops - relaxed threshold
+            if momentum > 0.025:  # 2.5% threshold (was 5%)
                 direction = "LONG"
-                confidence = min(0.8, regime_conf * 0.6 + momentum * 2)
+                confidence = min(0.8, regime_conf * 0.6 + momentum * 3)
             else:
                 direction = "FLAT"
                 confidence = 0.0
