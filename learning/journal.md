@@ -7,6 +7,75 @@
 
 ## 📅 Semaine 31 - 27 Mai 2026 - Phase 3: Shadow Mode Launch
 
+### 🎯 27 Mai 2026 - 12:05 UTC - Daily Shadow Mode Checkpoint ✅
+
+**Contexte:** J+1 du Shadow Mode. Surveillance quotidienne du système Saiyan v0.2.
+
+**État du système:**
+- v0.2 Status: ✅ OPÉRATIONNEL
+- Risk Monitor: ✅ NORMAL (trading allowed)
+- Shadow Mode: 🟢 J+1/30 (26 Mai → 25 Juin 2026)
+
+**Risk Metrics (J+1):**
+- Daily PnL: 0.00% (pas de trades)
+- Drawdown: 0.00%
+- VaR 95%: 0.00% (pas d'exposition)
+- CVaR 95%: 0.00%
+- Circuit Breaker: NORMAL
+
+**Backtest Sanity Check:**
+- v0.2 (500 bars): -3.13%, 42 trades, WR 52.4%
+- Validated (2337 jours): +55%, 63 trades, WR 57.1%
+- **Décision:** v0.2 backtest = smoke test, validated = référence ✅
+
+**Travaux du jour:**
+1. ✅ Check système quotidien (monitor mode)
+2. ✅ Backtest sanity check effectué
+3. ✅ Confirmation: discrepancy backtest = données différentes (500 bars vs 2337 jours)
+4. ✅ Journal mis à jour avec état J+1
+
+**Prochaines Étapes:**
+- [ ] Surveillance quotidienne VaR/CVaR
+- [ ] Weekly stress test (Dimanche 17h UTC)
+- [ ] Go/No-Go decision (25 Juin 2026)
+- [ ] Master 5+ enhancements (Derivatives integration)
+
+**Aucune notification W requise** - Mode autonome, système opérationnel, aucun module majeur complété aujourd'hui.
+
+---
+
+### 🎯 27 Mai 2026 - 08:20 UTC - Checkpoint Autonome Completé ✅
+
+**Résumé J+1 Shadow Mode:**
+
+**État Système:**
+- Saiyan v0.2: ✅ OPÉRATIONNEL
+- Risk Monitor: ✅ NORMAL (trading allowed)
+- Shadow Mode: 🟢 J+1/30 (26 Mai → 25 Juin 2026)
+
+**Travaux Effectués:**
+1. ✅ Check système quotidien (monitor mode)
+2. ✅ Fetch données BTC temps réel ($75,896.50)
+3. ✅ Backtest sanity check (-2.82% sur 500 bars récents)
+4. ✅ Debug backtest discrepancy identifiée:
+   - v0.2: 500 bars récents (smoke test)
+   - Validated: 2337 jours 2020-2026 (+55%, Sharpe 0.91)
+5. ✅ Config alignée avec params validés:
+   - Momentum period: 5j → 20j
+   - Bear regime: NO TRADING
+   - Trailing stop: 8%
+   - Regime sizing: Bull 18.75%, Range 6.25%, VolBull 12.5%, Bear 0%
+6. ✅ Git commit + push
+
+**Prochaines Étapes:**
+- [ ] Surveillance quotidienne VaR/CVaR
+- [ ] Weekly stress test (Dimanche 17h UTC)
+- [ ] Go/No-Go decision (25 Juin 2026)
+
+**Aucune notification W requise** - Mode autonome, aucun module majeur complété aujourd'hui.
+
+---
+
 ### 🎯 27 Mai 2026 - 08:15 UTC - Root Cause Identifiée ✅
 
 **Root Cause:** Backtest engine v0.2 utilise 500 bars (données synthétiques) vs 2337 jours (données réelles) dans validated.
