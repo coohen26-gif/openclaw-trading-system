@@ -1,0 +1,20 @@
+{
+  "lastSession": {
+    "date": "2026-05-27",
+    "time": "02:30 UTC",
+    "sessionId": "cron:068438a2-a6b8-4d3b-88e2-346ce3e09159",
+    "sessionNumber": 5,
+    "sourceFile": "memory/2026-05-25-recherche-nocturne.md"
+  },
+  "nextScheduled": "2026-05-28T02:00:00Z",
+  "filesCreated": [
+    "memory/dreaming/archive/2026-05/2026-05-26-dream-processing.md",
+    "memory/2026-05-27.md"
+  ],
+  "memoryUpdated": true,
+  "telegramNotified": false,
+  "telegramError": "Bot not member of channel (403 Forbidden)",
+  "insightsExtracted": 3,
+  "ideasGenerated": 4,
+  "actionsIdentified": 3
+}

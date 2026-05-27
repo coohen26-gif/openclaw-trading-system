@@ -1,0 +1,193 @@
+# 🌙 Dream Processing - 26 Mai 2026 (Session 5)
+
+**Session:** cron:068438a2-a6b8-4d3b-88e2-346ce3e09159  
+**Mode:** Introspectif et créatif  
+**Heure:** 02:00 UTC  
+**Fichier source:** `memory/2026-05-25-recherche-nocturne.md`
+
+---
+
+## 📚 Contexte de la Session
+
+Cinquième session de dream processing consécutive. Analyse approfondie de la recherche nocturne du 25 mai sur :
+- Stratégies de trading avancées (Mean Reversion, Momentum, Breakouts)
+- Hidden Markov Models (HMM) pour détection de régimes
+- Walk-Forward Optimization (WFO)
+- Analyse concurrentielle des bots open source (Vibe-Trading, OpenAlice, ai-crypto-bot)
+
+---
+
+## 🎯 Insights Majeurs Extraits
+
+### Insight #1: HMM + WFO = Edge Majeur ⭐⭐⭐
+
+**Découverte:** La combinaison Hidden Markov Models + Walk-Forward Optimization crée un avantage compétitif significatif.
+
+**Mécanisme:**
+- HMM détecte 2-3 régimes (Low Vol / High Vol / Crisis)
+- WFO réentraîne weekly sans lookahead bias
+- Résultat documenté: **+30-50% performance** vs modèle unique rigide
+
+**Application Saiyan:** Intégrer comme "Regime Oracle" — module HMM lightweight qui route dynamiquement vers la stratégie appropriée selon le régime détecté.
+
+---
+
+### Insight #2: Trading-as-Git pour Transparence ⭐⭐
+
+**Inspiration:** OpenAlice (4,014⭐) a innové avec le concept "Trading-as-Git"
+
+**Concept:**
+- Chaque signal = "commit" avec message justifié
+- Utilisateur approve/reject/amend via Inbox Telegram
+- Historique consultable comme `git log`
+
+**Avantage:** Transparence totale + apprentissage post-mortem facilité + versionning des décisions
+
+---
+
+### Insight #3: Swarm > Agent Unique ⭐⭐
+
+**Pattern:** Vibe-Trading (8,435⭐) utilise une architecture multi-agents spécialisée
+
+**Architecture:**
+```
+Orchestrator → Research + Risk + Execution + Monitor Agents
+```
+
+**Edge:** Parallélisation + spécialisation + voting system (Risk a veto) + heartbeats live
+
+---
+
+## 🚀 4 Idées Originales pour Système Saiyan
+
+### Idée #1: "Regime Oracle" (HMM + Router) ⭐⭐⭐ P0
+
+**Concept:** Module HMM lightweight détecte régime → routage dynamique vers stratégie appropriée
+
+**Implémentation:**
+```
+HMM (3 états) → Low Vol: Mean Reversion
+              → High Vol: Momentum Breakout
+              → Crisis: Risk-Off + Cash
+```
+
+**Innovation:** Pool de stratégies + router intelligent (pas stratégie statique)
+
+**Effort:** Moyen | **Impact:** Élevé | **Temps:** 2-3 semaines
+
+---
+
+### Idée #2: "Trading Git" + Inbox Décisions ⭐⭐ P1
+
+**Concept:** Chaque signal génère un "trade commit" → notification Telegram avec boutons approve/reject/amend
+
+**Workflow:**
+1. Signal détecté → Commit créé (stratégie, confiance, SL, TP)
+2. Inbox push → Utilisateur vote
+3. Execution si approved → Historique git-like
+
+**Innovation:** Versionning des décisions + contrôle utilisateur
+
+**Effort:** Faible | **Impact:** Moyen | **Temps:** 3-5 jours
+
+---
+
+### Idée #3: "Swarm Micro-Agents" Spécialisés ⭐⭐ P2
+
+**Concept:** Équipe de 4 agents spécialisés qui collaborent
+
+**Rôles:**
+- **Research:** Scan news, tech, sentiment
+- **Risk:** VaR, correlation, position checks
+- **Execution:** Smart order routing, slippage management
+- **Monitor:** PnL tracking, regime shift alerts
+
+**Innovation:** Voting system + heartbeats live + parallélisation
+
+**Effort:** Élevé | **Impact:** Élevé | **Temps:** 4-6 semaines
+
+---
+
+### Idée #4: "Shadow Mode" + Auto-Learning ⭐ P3
+
+**Concept:** Bot tourne en fictif 2-4 semaines → auto-analyse erreurs → propose ajustements
+
+**Fonctionnement:**
+1. Décisions fictives enregistrées
+2. Track performance shadow vs marché
+3. Auto-analyse post-mortem
+4. Propose parameter tuning
+
+**Innovation:** Auto-improvement avant risque capital réel
+
+**Effort:** Moyen | **Impact:** Moyen | **Temps:** 2-3 semaines
+
+---
+
+## 📊 Analyse Concurrentielle Mise à Jour
+
+| Projet | Stars | Tech | Points Forts |
+|--------|-------|------|--------------|
+| **Vibe-Trading** | 8,435 | Python | Swarm multi-agents, Research Goals, MCP, heartbeats live |
+| **OpenAlice** | 4,014 | TypeScript | Trading-as-Git, UTA multi-brokers, guard pipeline |
+| **ai-crypto-bot** | 12 | Python | LLM agents, arbitrage, grid, DCA |
+
+**Faiblesses repérées:**
+- Crypto-centric (peu equities/forex)
+- Backtesting basique (pas WFO, pas HMM)
+- Pas d'adaptation dynamique régimes
+- Documentation production limitée
+
+**Notre différentiateur:** HMM + WFO + Regime-Adaptive par design
+
+---
+
+## 🔗 Connections Inattendues
+
+1. **HMM × Shadow Mode:** HMM peut détecter si shadow performance dégrade → trigger auto-retrain
+2. **Git Trading × Swarm:** Chaque agent peut créer des commits → Orchestrator consolide
+3. **WFO × Multi-Stratégies:** Chaque stratégie du pool a son propre WFO schedule
+
+---
+
+## 🧠 Leçon Clé
+
+> **"Les marchés ne sont ni purement trend-following ni purement mean-reverting. L'edge vient de savoir quel régime domine et trader en conséquence."**
+
+Notre système Saiyan doit être **adaptatif par design**, pas statique.
+
+---
+
+## ✅ Actions Concrètes pour la Journée (26 Mai 2026)
+
+### Action 1: 🏗️ Initialiser module HMM Regime Oracle (P0)
+**Objectif:** Prototyper détection 3 régimes sur données BTC/ETH
+**Tâches:**
+- [ ] Installer `hmmlearn` dans venv saiyan
+- [ ] Récupérer 90j données 5min (BTC, ETH)
+- [ ] Features: returns, ATR, volume, correlation
+- [ ] Entraîner GaussianHMM(3 états)
+- [ ] Visualiser états détectés vs prix
+**Critère succès:** HMM converge, états interprétables | **Temps:** 3-4h
+
+### Action 2: 📐 Designer architecture "Trading Git" (P1)
+**Objectif:** Spécifier workflow commits + Inbox Telegram
+**Tâches:**
+- [ ] Doc architecture (commit structure, metadata, storage)
+- [ ] Designer message Telegram avec boutons inline
+- [ ] Plan intégration avec système de signaux existant
+- [ ] KPIs: temps approbation moyen, taux rejection
+**Temps:** 1-2h
+
+### Action 3: 📊 Backtest rapide HMM performance (P0)
+**Objectif:** Valider edge HMM vs modèle unique
+**Tâches:**
+- [ ] Backtest simple: MeanRev seule vs MeanRev + HMM filter
+- [ ] Période: 60 jours BTC/ETH 15min
+- [ ] Métriques: WR, Sharpe, max drawdown
+- [ ] Documenter résultats dans `learning/backtests/`
+**Temps:** 2-3h
+
+---
+
+*Dream processing complété à 02:30 UTC - 26 Mai 2026*
