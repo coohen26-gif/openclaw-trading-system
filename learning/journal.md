@@ -7,6 +7,37 @@
 
 ## 📅 Semaine 31 - 27 Mai 2026 - Phase 3: Shadow Mode Launch
 
+### 🎯 27 Mai 2026 - 08:05 UTC - Shadow Mode J+1 Checkpoint ✅
+
+**Contexte:** J+1 du Shadow Mode. Surveillance quotidienne du système Saiyan v0.2.
+
+**État du système:**
+- v0.2 Status: ✅ OPÉRATIONNEL
+- Risk Monitor: ✅ NORMAL (trading allowed)
+- Portfolio: ⚠️ Rebalance needed (drift 52% BTC - position non initialisée)
+- Shadow Mode: 🟢 J+1/30
+
+**Risk Metrics (J+1):**
+- Daily PnL: 0.00% (pas de trades)
+- Drawdown: 0.00%
+- VaR 95%: 0.00% (pas d'exposition)
+- CVaR 95%: 0.00%
+- Circuit Breaker: NORMAL
+
+**Performance Shadow Mode (J+1):**
+- PnL quotidien: 0.00% (pas de trades encore)
+- VaR 95%: 0.00% (pas d'exposition)
+- CVaR 95%: 0.00%
+- Circuit Breaker: NORMAL
+
+**Prochaines étapes:**
+1. [ ] Attendre premiers signaux Momentum+HMM
+2. [ ] Surveillance VaR/CVaR quotidienne
+3. [ ] Weekly stress test (dimanche 17h UTC)
+4. [ ] Go/No-Go decision (25 Juin 2026)
+
+---
+
 ### 🎯 27 Mai 2026 - 04:05 UTC - J+1 Shadow Mode Checkpoint ✅
 
 **Contexte:** J+1 du Shadow Mode. Système Saiyan v0.2 opérationnel en production.
