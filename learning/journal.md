@@ -5,6 +5,54 @@
 
 ---
 
+## 📅 Semaine 33 - 27 Mai 2026 - EGARCH Leverage Effect
+
+### 🎯 27 Mai 2026 - 22:50 UTC - EGARCH Leverage Effect Validé ✅
+
+**Contexte:** Modélisation asymétrie leverage effect avec EGARCH(1,1).
+
+**Ce que j'ai fait:**
+1. Créé `learning/code/egarch_btc.py` (10.6KB) - EGARCH fit + visualisation
+2. Exécuté sur 998 jours de données réelles (2023-09-03 à 2026-05-27)
+3. Créé `learning/notes/semaine-33-egarch-leverage-effect.md` (7.8KB)
+4. Auto-commit + auto-push en cours
+
+**Résultats EGARCH(1,1):**
+```
+Coefficients:
+  ω (omega)   = 0.1845  [long-run variance]
+  α (alpha)   = 0.2227  [magnitude effect]
+  β (beta)    = 0.9039  [persistence]
+  γ (gamma)   = -0.0467  [leverage effect] ⚠️ < 0
+
+Volatilité:
+  Daily: 2.081%
+  Annualized: 39.75%
+  Long-run: 2.421%
+  Half-life: 6.9 jours
+
+Comparaison GARCH:
+  AIC: 4567.70 (vs 4573.18) → EGARCH meilleur ✅
+```
+
+**Leverage Effect Confirmé:**
+- γ = -0.0467 < 0 → Bad news augmente PLUS la vol que good news
+- Après crash (-5%): vol spike durable (~7 jours half-life)
+- Critical pour risk management: renforcer stops après bad news
+
+**Applications Saiyan:**
+- Leverage-adjusted position sizing (réduire après bad news)
+- Circuit breakers dynamiques (thresholds plus serrés après crashes)
+- Matrice HMM + EGARCH pour routing stratégique
+
+**État actuel:**
+- Master 1-5: ✅ 100%
+- Phase 2 (Intégration): ✅ 100%
+- Phase 3 (Production): 🔄 99.5%
+- **Total: ~99%**
+
+---
+
 ## 📅 Semaine 32 - 27 Mai 2026 - Phase 4: GARCH Volatility Modeling
 
 ### 🎯 27 Mai 2026 - 22:45 UTC - Intégration GARCH dans Saiyan v0.2 ✅
