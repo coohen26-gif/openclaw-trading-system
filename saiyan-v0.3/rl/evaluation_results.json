@@ -1,0 +1,9 @@
+{
+  "mean_reward": -26.19442367553711,
+  "std_reward": 1.9073486328125e-06,
+  "mean_return": 0.0,
+  "std_return": 0.0,
+  "mean_drawdown": 0.0,
+  "mean_trades": 185.0,
+  "n_episodes": 10
+}

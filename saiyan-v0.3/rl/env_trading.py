@@ -84,12 +84,14 @@ class TradingEnv(gym.Env):
             )  # -1=full short, 0=flat, +1=full long
         
         # Observation space
-        # Features: returns(5) + vol(1) + RSI(1) + MACD(2) + regime(4) + portfolio(3) = 16
+        # Features: returns(lookback) + vol(lookback) + rsi(lookback) + regime(4) + portfolio(3)
         n_features = lookback_window * 3 + 4 + 3  # price features + regime + portfolio
         self.observation_space = spaces.Box(
             low=-np.inf, high=np.inf,
             shape=(n_features,), dtype=np.float32
         )
+        
+        print(f"[TradingEnv] Observation space: {n_features} features (lookback={lookback_window})")
         
         # State variables
         self.current_step = 0
@@ -146,18 +148,33 @@ class TradingEnv(gym.Env):
         vol_window = self.data['volatility'].iloc[start_idx:end_idx].values
         rsi_window = self.data['rsi'].iloc[start_idx:end_idx].values / 100.0  # Normalize to [0,1]
         
-        # Pad if necessary
+        # Pad if necessary to ensure exact lookback_window size
         if len(returns_window) < self.lookback_window:
             pad_len = self.lookback_window - len(returns_window)
             returns_window = np.pad(returns_window, (pad_len, 0), mode='constant')
             vol_window = np.pad(vol_window, (pad_len, 0), mode='constant')
             rsi_window = np.pad(rsi_window, (pad_len, 0), mode='constant')
         
+        # Ensure exact size (truncate if somehow larger)
+        returns_window = returns_window[:self.lookback_window]
+        vol_window = vol_window[:self.lookback_window]
+        rsi_window = rsi_window[:self.lookback_window]
+        
         # Regime probabilities (if available)
-        if self.regime_probs is not None and self.current_step < len(self.regime_probs):
-            regime_probs = self.regime_probs[self.current_step]
+        if self.regime_probs is not None:
+            if self.current_step < len(self.regime_probs):
+                regime_probs = self.regime_probs[self.current_step].copy().flatten()
+            else:
+                # Use last available if step exceeds probs length
+                regime_probs = self.regime_probs[-1].copy().flatten()
         else:
-            regime_probs = np.array([0.25, 0.25, 0.25, 0.25])  # Uniform prior
+            regime_probs = np.array([0.25, 0.25, 0.25, 0.25], dtype=np.float32)  # Uniform prior
+        
+        # Ensure regime_probs is exactly 4 elements
+        if len(regime_probs) != 4:
+            regime_probs = np.ones(4, dtype=np.float32) / 4
+        else:
+            regime_probs = regime_probs[:4]  # Truncate to 4 if larger
         
         # Portfolio state
         current_price = self.data['close'].iloc[self.current_step]
@@ -167,16 +184,23 @@ class TradingEnv(gym.Env):
             self.balance / self.initial_balance,  # Normalized balance
             self.position / (self.initial_balance / current_price),  # Normalized position
             unrealized_pnl / self.initial_balance  # Normalized unrealized PnL
-        ])
+        ], dtype=np.float32)
         
         # Concatenate all features
         observation = np.concatenate([
-            returns_window,
-            vol_window,
-            rsi_window,
-            regime_probs,
+            returns_window.astype(np.float32),
+            vol_window.astype(np.float32),
+            rsi_window.astype(np.float32),
+            regime_probs.astype(np.float32),
             portfolio_state
         ])
+        
+        # Debug: verify size
+        expected_size = self.lookback_window * 3 + 4 + 3
+        if len(observation) != expected_size:
+            print(f"[DEBUG] Obs size mismatch: got {len(observation)}, expected {expected_size}")
+            print(f"  returns: {len(returns_window)}, vol: {len(vol_window)}, rsi: {len(rsi_window)}")
+            print(f"  regime: {len(regime_probs)}, portfolio: {len(portfolio_state)}")
         
         return observation.astype(np.float32)
     
