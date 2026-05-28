@@ -1550,13 +1550,11 @@ Confidence = (Technicals × 0.35) + (On-Chain × 0.25) + (Sentiment × 0.20) + (
 
 ---
 
-## Promoted From Short-Term Memory (2026-05-27)
+## Promoted From Short-Term Memory (2026-05-28)
 
-<!-- openclaw-memory-promotion:memory:memory/2026-05-21.md:3:5 -->
-- **Date:** Jeudi 21 Mai 2026 **Agent:** Bonjour (Goku) 👋 **Session:** cron:068438a2-a6b8-4d3b-88e2-346ce3e09159 (Dream Processing) [score=0.883 recalls=0 avg=0.620 source=memory/2026-05-21.md:3-5]
-<!-- openclaw-memory-promotion:memory:memory/2026-05-21.md:13:13 -->
-- **Activité:** Recherche technologique approfondie sur l'état de l'art du trading algorithmique 2025-2026. [score=0.883 recalls=0 avg=0.620 source=memory/2026-05-21.md:13-13]
-<!-- openclaw-memory-promotion:memory:memory/2026-05-21.md:15:15 -->
-- **Sources explorées:** [score=0.883 recalls=0 avg=0.620 source=memory/2026-05-21.md:15-15]
-<!-- openclaw-memory-promotion:memory:memory/2026-05-21.md:27:27 -->
-- **Découverte:** On passe de RSI \u003c30 → achat à des modèles sophistiqués: [score=0.883 recalls=0 avg=0.620 source=memory/2026-05-21.md:27-27]
+<!-- openclaw-memory-promotion:memory:memory/2026-05-21.md:34:34 -->
+- **Action:** À intégrer progressivement dans le système Saiyan | **Priorité:** P1 (2-3 semaines) [score=0.887 recalls=0 avg=0.620 source=memory/2026-05-21.md:34-34]
+<!-- openclaw-memory-promotion:memory:memory/2026-05-22.md:3:6 -->
+- **Date:** Vendredi 22 Mai 2026 **Agent:** Bonjour (Goku) 👋 **Session:** cron:068438a2-a6b8-4d3b-88e2-346ce3e09159 (Dream Processing) **Heure:** 02:00 UTC [score=0.883 recalls=0 avg=0.620 source=memory/2026-05-22.md:3-6]
+<!-- openclaw-memory-promotion:memory:memory/2026-05-22.md:14:14 -->
+- **Activité:** Recherche technologique sur stratégies avancées + analyse concurrentielle bots open source. [score=0.883 recalls=0 avg=0.620 source=memory/2026-05-22.md:14-14]

@@ -1,0 +1,18 @@
+{
+  "lastSession": "2026-05-28",
+  "lastSessionTime": "02:15 UTC",
+  "sessionCount": 6,
+  "shadowModeDay": 1,
+  "shadowModeTotal": 30,
+  "nextCheck": "2026-05-29T02:00:00Z",
+  "priorities": [
+    "Review Shadow Mode J+1",
+    "Implémenter CPCV gate",
+    "Designer Skewness Gate"
+  ],
+  "insights": [
+    "Shadow Mode = Vérité Terrain",
+    "v0.3 Honnêteté Radicale",
+    "Deep RL = Différenciation Majeure"
+  ]
+}

@@ -1,9 +1,9 @@
 # 📅 J+1 → J+2 — 26 Mai 2026 — Audit & Reconstruction
 
-**Statut:** Phase 1 — Fondations (J+2/7 complété)  
+**Statut:** Phase 1 — Fondations (J+3/7 complété)  
 **Axe différenciation:** B — Deep RL (Policy Gradient)  
 **Bench Round 1:** 2026-06-25 23:00 UTC  
-**Dernière MAJ:** 2026-05-26 16:12 UTC
+**Dernière MAJ:** 2026-05-28 01:00 UTC
 
 ---
 
@@ -242,6 +242,68 @@ VOLATILE_BULL: 0.50x multiplier → 5.00% (cap respected ✅)
 - ✅ Position max 5% capital (hard cap)
 - ✅ Bear regime: no_trading flag activé
 - ✅ Confidence-based sizing (50-75% min)
+
+---
+
+## 📊 MÉTRIQUES J+3 (FIN DE JOURNÉE)
+
+| Métrique | Valeur |
+|----------|--------|
+| Audit complet | ✅ 100% |
+| Règles acceptées | ✅ 5/5 |
+| Axe différenciation | ✅ Choisi (B: Deep RL) |
+| Phase 1 avancement | ✅ 3/7 jours |
+| Gates Bailey implémentées | ❌ 0/5 |
+| Tests pytest | ❌ 0/944 |
+| Données réelles intégrées | ✅ 100% |
+| Vrai HMM implémenté | ✅ 100% |
+| Stratégie HMM intégrée | ✅ 100% |
+| Telegram notifier | ✅ 100% |
+| Kill switch persistant | ✅ 100% |
+| Fees 0.22% appliqués | ✅ 100% |
+| **Kelly cap 0.25x + pos 5%** | ✅ **100%** |
+| **Recherche nocturne Deep RL** | ✅ **100%** (semaine-35) |
+
+---
+
+## 🌙 RECHERCHE NOCTURNE J+3 (28 Mai 01:00 UTC)
+
+**Session:** Cron automatique "Recherche Nocturne Saiyan V0.3"  
+**Livrable:** `learning/notes/semaine-35-recherche-nocturne-deep-rl.md` (40KB)
+
+### Ce que j'ai produit:
+
+1. **Survey Deep RL architectures** (PPO, A2C, SAC)
+   - PPO recommandé pour stabilité + sample efficiency
+   - Architecture LSTM(128) → Dense(64) → Policy/Value heads
+   - Reward shaping risk-adjusted (PnL net fees - drawdown penalty)
+
+2. **Vrai HMM Baum-Welch rolling 180j**
+   - Implémentation complète avec `hmmlearn.GaussianHMM`
+   - Calibration automatique des labels (BULL/BEAR/RANGE/VOL)
+   - Pipeline quotidien re-fit avec nouvelles données
+
+3. **Gates Bailey complètes** (code prêt à copier)
+   - CPCV 6-fold (purged cross-validation temporelle)
+   - DSR (Deflated Sharpe Ratio)
+   - PSR (Probabilistic Sharpe Ratio > 0.95)
+   - PBO (Probability Backtest Overfitting < 0.5)
+   - Wilson CI95 pour Win Rate
+
+4. **Top 3 idées amélioration Saiyan v0.3:**
+   - 🏆 **Regime-Aware Deep RL** (HMM + 4 agents PPO spécialisés)
+   - 🥈 **Ensemble RL + Confluence Scoring** (3 architectures, vote pondéré)
+   - 🥉 **Self-Healing RL** (détection concept drift + retrain auto)
+
+### Roadmap mise à jour:
+
+| Jour | Tâche | Statut |
+|------|-------|--------|
+| J+3 (28 Mai) | ✅ Recherche nocturne Deep RL | ✅ FAIT |
+| J+4 (29 Mai) | Implémenter vrai HMM `hmmlearn` | ⏳ |
+| J+5 (30 Mai) | Implémenter gates Bailey (5 fichiers) | ⏳ |
+| J+6 (31 Mai) | Créer env RL Gymnasium | ⏳ |
+| J+7 (1 Juin) | Agent PPO baseline + training | ⏳ |
 
 ---
 
