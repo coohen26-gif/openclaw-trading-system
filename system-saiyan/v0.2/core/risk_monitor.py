@@ -301,11 +301,15 @@ class RiskMonitor:
         
         return alerts
     
-    def check_risk_metrics(self) -> RiskMetrics:
+    def check_risk_metrics(self, leverage_adjustment: Optional['LeverageAdjustment'] = None) -> RiskMetrics:
         """
         Check all risk metrics and return comprehensive RiskMetrics object.
         
         Call this before each trade decision.
+        
+        Args:
+            leverage_adjustment: Optional leverage adjustment from EGARCH model.
+                                If provided, tightens circuit breaker thresholds.
         """
         now = pd.Timestamp.now()
         
@@ -328,23 +332,47 @@ class RiskMonitor:
         # Determine circuit breaker level
         cb_level = self.determine_circuit_breaker_level(daily_pnl, drawdown)
         
-        # Update state
-        self.current_cb_level = cb_level
+        # Apply leverage adjustment if provided (EGARCH-based)
+        adjusted_cb_level = cb_level
+        adjusted_position_limit = position_limit
         
-        if cb_level == CircuitBreakerLevel.LEVEL_4_KILL:
+        if leverage_adjustment is not None:
+            # Tighten circuit breaker thresholds based on leverage state
+            cb_penalty = leverage_adjustment.circuit_breaker_penalty
+            
+            # If in WARNING or CRITICAL state, escalate CB level
+            if cb_penalty >= 0.40 and cb_level != CircuitBreakerLevel.LEVEL_4_KILL:
+                # Critical: escalate one level
+                if cb_level == CircuitBreakerLevel.LEVEL_1_WARNING:
+                    adjusted_cb_level = CircuitBreakerLevel.LEVEL_2_REDUCE
+                elif cb_level == CircuitBreakerLevel.LEVEL_2_REDUCE:
+                    adjusted_cb_level = CircuitBreakerLevel.LEVEL_3_STOP
+                elif cb_level == CircuitBreakerLevel.LEVEL_3_STOP:
+                    adjusted_cb_level = CircuitBreakerLevel.LEVEL_4_KILL
+            elif cb_penalty >= 0.25 and cb_level not in [CircuitBreakerLevel.LEVEL_3_STOP, CircuitBreakerLevel.LEVEL_4_KILL]:
+                # Warning: escalate one level if not already severe
+                if cb_level == CircuitBreakerLevel.LEVEL_1_WARNING:
+                    adjusted_cb_level = CircuitBreakerLevel.LEVEL_2_REDUCE
+            
+            # Reduce position limit based on leverage multiplier
+            position_mult = leverage_adjustment.position_size_multiplier
+            adjusted_position_limit = position_limit * position_mult
+        
+        # Update state with adjusted level
+        self.current_cb_level = adjusted_cb_level
+        
+        if adjusted_cb_level == CircuitBreakerLevel.LEVEL_4_KILL:
             self.kill_switch_active = True
         
-        # Generate alerts
-        alerts = self.generate_alerts(daily_pnl, drawdown, cb_level)
+        # Generate alerts (use adjusted level)
+        alerts = self.generate_alerts(daily_pnl, drawdown, adjusted_cb_level)
         self.alerts_history.extend(alerts)
         
         # Determine trading status
-        trading_allowed = cb_level not in [
+        trading_allowed = adjusted_cb_level not in [
             CircuitBreakerLevel.LEVEL_3_STOP,
             CircuitBreakerLevel.LEVEL_4_KILL
         ] and not self.kill_switch_active
-        
-        position_limit = self.CB_THRESHOLDS[cb_level]['position_limit_pct'] if cb_level != CircuitBreakerLevel.NORMAL else 100.0
         
         return RiskMetrics(
             timestamp=now,
@@ -355,9 +383,9 @@ class RiskMonitor:
             daily_pnl_pct=daily_pnl,
             drawdown_pct=drawdown,
             volatility=volatility,
-            circuit_breaker_level=cb_level,
+            circuit_breaker_level=adjusted_cb_level,
             trading_allowed=trading_allowed,
-            position_size_limit_pct=position_limit,
+            position_size_limit_pct=adjusted_position_limit,
             alerts=alerts
         )
     

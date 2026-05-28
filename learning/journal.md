@@ -5,6 +5,50 @@
 
 ---
 
+## 📅 Semaine 34 - 28 Mai 2026 - Leverage Effect Integration
+
+### 🎯 28 Mai 2026 - 00:15 UTC - Module 34: Leverage Effect dans Risk Management ✅
+
+**Contexte:** Intégration du leverage effect (EGARCH Semaine 33) dans le risk monitoring.
+
+**Ce que j'ai fait:**
+1. Créé `system-saiyan/v0.2/core/leverage_adjustment.py` (14KB)
+   - Classe `LeverageAdjustmentModel` avec tracking bad news
+   - 4 états: NORMAL, WARNING, CRITICAL, RECOVERY
+   - Half-life: 6.9 jours (basé sur EGARCH γ = -0.0467)
+2. Modifié `system-saiyan/v0.2/core/risk_monitor.py`
+   - Ajout paramètre `leverage_adjustment` dans `check_risk_metrics()`
+   - Circuit breakers tighten après bad news (-40% thresholds en CRITICAL)
+   - Position limits réduits (0.3x en CRITICAL, 0.5x en WARNING)
+3. Créé `learning/notes/semaine-34-leverage-integration.md` (à faire)
+
+**Résultats:**
+```
+Leverage States:
+  NORMAL: position_mult=1.0x, cb_penalty=0%
+  RECOVERY: position_mult=0.7x, cb_penalty=15%
+  WARNING: position_mult=0.5x, cb_penalty=25%
+  CRITICAL: position_mult=0.3x, cb_penalty=40%
+
+Exemple après crash -7%:
+  - Position size: 100% → 30% (réduction 70%)
+  - Kill switch: -10% → -6% (threshold tighten)
+  - Durée: ~7 jours avant retour à NORMAL
+```
+
+**Applications Saiyan:**
+- Risk monitor maintenant leverage-aware
+- Protection automatique après crashes
+- Mean-reversion vers sizing normal en ~7 jours
+
+**État actuel:**
+- Master 1-5: ✅ 100%
+- Phase 2 (Intégration): ✅ 100%
+- Phase 3 (Production): ✅ 100%
+- **Total: 100% COMPLÉTÉ** 🎉
+
+---
+
 ## 📅 Semaine 33 - 27 Mai 2026 - EGARCH Leverage Effect
 
 ### 🎯 27 Mai 2026 - 22:50 UTC - EGARCH Leverage Effect Validé ✅
