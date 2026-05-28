@@ -22,13 +22,19 @@
 2. ✅ Semaine 34 documentée - Leverage effect integration complétée
 3. ✅ Semaine 35 research nocturne - Deep RL + HMM + Gates Bailey
 4. ✅ Git commit + push (17 fichiers, 5816 insertions)
+5. ✅ **J+2: Vrai HMM implémenté** - `saiyan-v0.3/core/hmm_regime_detector.py` (17KB)
+   - Baum-Welch algorithm avec `hmmlearn`
+   - Rolling window 180 jours
+   - Calibration automatique des labels (BULL/BEAR/RANGE/VOLATILE)
+   - Sauvegarde/chargement état JSON
+   - Tests validés ✅
 
 **Audit v0.2 - Insights:**
 - ✅ Risk Monitor: Fonctionnel (VaR/CVaR + 4-level circuit breakers)
 - ✅ Portfolio Allocator: Risk Parity BTC 52%/ETH 28%/SOL 20%
 - ✅ Binance Connector: 4375 marchés chargés
 - ⚠️ Deribit IV Fetcher: Async bug à fixer (monitor mode)
-- ⚠️ HMM actuel: Rule-based déguisé (FAUX HMM, pas Baum-Welch)
+- ✅ **HMM: VRAI maintenant** (plus rule-based!)
 
 **Research Nocturne - Deep RL:**
 - Architecture cible: PPO avec LSTM (128 units) + regime awareness
@@ -43,8 +49,8 @@
 - Impact potentiel: Sharpe +40-60% vs HMM statique
 
 **Prochaines étapes (J+3 à J+7):**
-1. [ ] Implémenter vrai HMM avec `hmmlearn` (Baum-Welch rolling 180j)
-2. [ ] Gates Bailey: CPCV, DSR, PSR, PBO, Wilson CI
+1. [x] ~~Implémenter vrai HMM avec `hmmlearn` (Baum-Welch rolling 180j)~~ ✅
+2. [ ] Gates Bailey: CPCV, DSR, PSR, PBO, Wilson CI (déjà dans `core/gates_bailey.py`)
 3. [ ] Environment RL Gymnasium-compatible
 4. [ ] Agent PPO baseline avec Stable-Baselines3
 5. [ ] Training loop + validation OOS
@@ -55,7 +61,7 @@
 - Surveillance: VaR/CVaR quotidien, circuit breakers actifs
 - J+2: Système opérationnel, aucun trade encore
 
-**Aucune notification W requise** - Mode autonome, système opérationnel, recherche Deep RL en cours.
+**Aucune notification W requise** - Mode autonome, système opérationnel, HMM vrai implémenté, recherche Deep RL en cours.
 
 ### 🎯 28 Mai 2026 - 00:15 UTC - Module 34: Leverage Effect dans Risk Management ✅
 
