@@ -51,7 +51,51 @@
 
 ---
 
-_Maj 2026-05-27 - Dream Processing Session 5 + Architecture Système Saiyan Finalisée_
+_Maj 2026-05-28 - Dream Processing Session 6 + Shadow Mode J+1 Validé + Gates Bailey Roadmap_
+
+---
+
+## 🌙 Dream Processing 2026-05-28 - Session 6 (Shadow Mode & Honnêteté)
+
+### 📚 Sources Analysées
+
+- `memory/dreaming/light/2026-05-27.md` — Candidates stagés
+- `memory/dreaming/deep/2026-05-27.md` — 4 candidats promus
+- `memory/dreaming/rem/2026-05-27.md` — Fat-tail hunter, skewness gate
+- `memory/2026-05-27.md` — Journal Shadow Mode J+1
+
+---
+
+### 🎯 Insights Majeurs
+
+**Insight #1: Shadow Mode = Vérité Terrain** ⭐⭐⭐
+- Backtest v0.2 flatteur (+55%, Sharpe 0.91) ≠ réalité production
+- 30 jours Shadow Mode = vraie validation (décisions temps réel, sans risque)
+- VaR/CVaR quotidien + circuit breakers = mesure de robustesse
+
+**Insight #2: v0.3 Honnêteté Radicale** ⭐⭐
+- Audit v0.2 a révélé claims exagérés (données synthétiques, HMM fake)
+- v0.3 part de zéro : données réelles Binance (2300 jours), vrai hmmlearn, fees 0.22%
+- Gates Bailey : 0/5 implémentées (CPCV, DSR, PSR, PBO, Wilson) → priorité absolue
+
+**Insight #3: Deep RL = Différenciation Majeure** ⭐⭐
+- Policy Gradient (PPO) peut surpasser HMM statique
+- Edge : adaptation continue, pas de retraining weekly
+- Timeline : J+15 à J+21 (après Gates Bailey)
+
+---
+
+### 🧠 Leçon Clé
+
+> **"Un backtest ment toujours un peu. Le Shadow Mode ne ment jamais."**
+
+La vraie validation n'est pas dans le passé optimisé, mais dans le présent non-edité.
+
+---
+
+### 📄 Fichier de Référence
+
+- `memory/dreaming/archive/2026-05/2026-05-28-dream-processing.md` — Document complet session 6
 
 ---
 
