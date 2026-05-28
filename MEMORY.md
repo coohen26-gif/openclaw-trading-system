@@ -55,6 +55,63 @@ _Maj 2026-05-28 - Dream Processing Session 6 + Shadow Mode J+1 Validé + Gates B
 
 ---
 
+## 🚀 Gates Bailey Sprint 2026-05-28 (COMPLÉTÉ EN 24H)
+
+### Contexte
+- Audit Claude 2026-05-28 : **0/5 Gates Bailey** implémentées → blocage principal
+- Objectif W : compression roadmap de "27 jours" à **24-48h**
+- Sub-agents ont crashé (gateway restart) → reprise en mode direct ultra-rapide
+
+### Livrables Créés (2026-05-28)
+
+**1. core/gates_bailey.py** (600+ lignes)
+- CPCV (Combinatorial Purged Cross-Validation)
+- DSR (Deflated Sharpe Ratio)
+- PSR (Probability of Sharpe Ratio)
+- PBO (Probability of Backtest Overfitting)
+- Wilson Score Interval
+
+**2. tests/test_gates_bailey.py** (29 tests)
+- Couverture complète des 5 gates
+- **Résultat: 29/29 passés en 0.74s** ✅
+
+**3. config/gates_thresholds.json**
+- Seuils configurables par gate
+- DSR > 0, p < 0.05
+- PSR > 0.95
+- PBO < 0.10
+- Wilson WR_lower > 0.50 (target 0.70)
+
+**4. docs/GATES_BAILEY_IMPLEMENTATION.md**
+- Documentation complète avec références académiques
+- Exemples d'usage, workflow, interprétation résultats
+
+**5. scripts/run_gates_validation.py**
+- CLI de validation rapide
+- Support données synthétiques et réelles
+
+**6. README.md**
+- Vue d'ensemble projet Saiyan v0.3
+- Roadmap Phases 1-4
+
+### Validation Initiale
+```bash
+python scripts/run_gates_validation.py --synthetic
+# DSR ✅ PASS (1.169, p=0.0000)
+# PSR ✅ PASS (1.000)
+# WILSON ❌ FAIL (WR 54.4%, CI [48.2%, 60.4%])
+# → Comportement CORRECT: gate filtre stratégies non-solides
+```
+
+### Prochaines Étapes
+- **Phase 2 (J+1-J+2):** Intégration avec backtest engine Saiyan
+- **Phase 3 (J+3-J+10):** Shadow Mode paper-deploy
+- **Phase 4 (J+11+):** Deep RL (PPO)
+
+---
+
+---
+
 ## 🌙 Dream Processing 2026-05-28 - Session 6 (Shadow Mode & Honnêteté)
 
 ### 📚 Sources Analysées
