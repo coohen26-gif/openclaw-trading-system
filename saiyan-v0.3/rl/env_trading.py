@@ -221,29 +221,43 @@ class TradingEnv(gym.Env):
         # Base: PnL net fees (normalized by capital)
         base_reward = (pnl - fees) / self.initial_balance
         
-        # Penalty: Drawdown aversion (risk management)
-        drawdown_penalty = 0.5 * max(0, drawdown)  # Penalize large DD
+        # Penalty: Drawdown aversion (risk management) - REDUCED for v2
+        drawdown_penalty = 0.2 * max(0, drawdown)  # Reduced from 0.5 to 0.2 (less punitive)
         
-        # Penalty: Volatility (Sharpe-like component)
-        vol_penalty = 0.1 * volatility / (abs(base_reward) + 1e-6)
+        # Penalty: Volatility (Sharpe-like component) - REDUCED for v2
+        vol_penalty = 0.02 * volatility / (abs(base_reward) + 1e-6)  # Reduced from 0.1 to 0.02
         
-        # Bonus: Regime-aware (reward appropriate actions)
+        # Bonus: Regime-aware (reward appropriate actions) - ENHANCED v2
         regime_bonus = 0.0
         # Find dominant regime
         dominant_regime = np.argmax(regime_probs)
+        regime_confidence = regime_probs[dominant_regime]  # How confident is the regime detection?
+        
+        # Base bonus scaled by regime confidence (higher confidence = higher bonus)
+        base_bonus = 0.15 * regime_confidence  # Increased from 0.05 to 0.15 * confidence
         
         if dominant_regime == 0:  # BULL
             if action == 2 or self.position > 0:  # BUY or LONG
-                regime_bonus = 0.05
+                regime_bonus = base_bonus
+            elif action == 0 and self.position > 0:  # SELL when long = penalty
+                regime_bonus = -0.10
         elif dominant_regime == 1:  # BEAR
             if action == 1 or self.position == 0:  # HOLD or FLAT
-                regime_bonus = 0.05
+                regime_bonus = base_bonus
+            elif action == 2 or self.position > 0:  # BUY when bear = penalty
+                regime_bonus = -0.15
         elif dominant_regime == 2:  # RANGE
-            if abs(self.position) < 0.02 * (self.initial_balance / self.data['close'].iloc[self.current_step]):
-                regime_bonus = 0.03  # Reward small positions
-        elif dominant_regime == 3:  # VOLATILE
-            if abs(self.position) < 0.01 * (self.initial_balance / self.data['close'].iloc[self.current_step]):
-                regime_bonus = 0.05  # Reward very small positions
+            position_ratio = abs(self.position) / (self.initial_balance / self.data['close'].iloc[self.current_step])
+            if position_ratio < 0.02:
+                regime_bonus = base_bonus * 0.8  # Reward small positions
+            elif position_ratio > 0.10:
+                regime_bonus = -0.10  # Penalty for large positions in range
+        elif dominant_regime == 3:  # VOLATILE_TRANSITION
+            position_ratio = abs(self.position) / (self.initial_balance / self.data['close'].iloc[self.current_step])
+            if position_ratio < 0.01:
+                regime_bonus = base_bonus  # Reward very small positions
+            elif position_ratio > 0.05:
+                regime_bonus = -0.12  # Penalty for large positions in volatile regime
         
         # Penalty: Excessive trading (transaction costs)
         trading_penalty = -0.001 * (1 if action != 1 else 0)  # Penalty for non-HOLD
