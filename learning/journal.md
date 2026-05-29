@@ -85,7 +85,47 @@
 | HMM v2 (Reward) | -20.65 | 235 | -36,887 | +18.0% |
 | HMM v3 (Features) | -20.43 | 258 | -35,727 | +18.9% |
 
+---
+
+### 🎯 29 Mai 2026 - 10:30 UTC - Walk-Forward Validation (ÉCHEC PPO) ⚠️
+
+**Contexte:** Validation hors-échantillon du PPO v2 (187 features) sur test set 2024-2026.
+
+**Résultats Walk-Forward:**
+
+| Métrique | PPO v2 (Test) | Momentum+HMM (Test) | Gagnant |
+|----------|---------------|---------------------|---------|
+| Return | 0.00% | **+91.86%** | Momentum+HMM ✅ |
+| Sharpe | -0.06 | **1.62** | Momentum+HMM ✅ |
+| Max DD | N/A | -8.92% | - |
+| Win Rate | N/A | 55.3% | - |
+| N Trades | 0 | 38 | Momentum+HMM ✅ |
+| PSR | 0.17 | 0.50 | Momentum+HMM ✅ |
+
+**Analyse:**
+1. **PPO overfitting massif:** Agent ne trade PAS du tout (0 trades) sur test set
+2. **Reward négatif (-56k):** Pénalités de drawdown/vol sans PnL pour compenser
+3. **Momentum+HMM robuste:** +92% return, Sharpe 1.62, DD -9% → tous critères ✅
+4. **PSR PPO = 0.17:** 17% probabilité que Sharpe > 0 → non significatif
+5. **PSR Momentum = 0.50:** 50% probabilité que Sharpe > 0 → acceptable
+
+**Causes probables:**
+- PPO mémorise training data (2020-2024) au lieu d'apprendre patterns généraux
+- VecNormalize non chargé → observation distribution shift
+- Reward shaping trop complexe (regime_bonus, drawdown, vol) → agent confus
+- 100k timesteps insuffisants pour généralisation
+
+**Décision:**
+- ❌ **PPO abandonné pour production** (overfitting trop important)
+- ✅ **Momentum+HMM validé pour Shadow Mode** (robuste OOS)
+- 🔄 PPO à retravailler en R&D (plus de données, regularization, early stopping)
+
 **Prochaines étapes:**
+1. [ ] Focus sur Momentum+HMM pour Shadow Mode
+2. [ ] PPO R&D: CPCV, early stopping, dropout, plus de données
+3. [ ] Gates Bailey complet sur Momentum+HMM (CPCV, DSR, PBO)
+
+---**Prochaines étapes:**
 1. [ ] **Walk-forward validation:** Gates Bailey metrics (CPCV, DSR, PSR, PBO)
 2. [ ] **Shadow Mode J+3:** Monitoring quotidien
 3. [ ] **Multi-agent RL:** 4 agents spécialisés par régime
