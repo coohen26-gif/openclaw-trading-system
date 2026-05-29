@@ -1,9 +1,27 @@
 {
-  "mean_reward": -26.19442367553711,
-  "std_reward": 1.9073486328125e-06,
+  "mean_reward": -25.1262,
+  "std_reward": 0.0,
   "mean_return": 0.0,
   "std_return": 0.0,
   "mean_drawdown": 0.0,
-  "mean_trades": 185.0,
-  "n_episodes": 10
+  "mean_trades": 235.0,
+  "n_episodes": 10,
+  "training_timesteps": 100000,
+  "hmm_integrated": true,
+  "regime_distribution": {
+    "BULL": 0.226,
+    "BEAR": 0.660,
+    "RANGE": 0.090,
+    "VOLATILE": 0.024
+  },
+  "eval_reward_progression": {
+    "5000": -40503,
+    "25000": -40398,
+    "50000": -40540,
+    "75000": -40593,
+    "95000": -40052,
+    "100000": -40031
+  },
+  "final_eval_reward": -40031,
+  "improvement_vs_uniform": "+0.5% (marginal - regime probs need better integration)"
 }

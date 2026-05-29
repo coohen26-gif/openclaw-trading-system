@@ -76,14 +76,14 @@ def load_training_data(
     print(f"📥 Loading {symbol} data ({start_date} to {end_date})...")
     
     # Use full historical data from learning/data (has OHLCV columns)
-    data_file = f'learning/data/{symbol.lower()}_usdt_daily.csv'
+    data_file = f'../learning/data/{symbol.lower()}_usdt_daily.csv'
     
     import os
     if os.path.exists(data_file):
         df = pd.read_csv(data_file, parse_dates=['timestamp'], index_col='timestamp')
     else:
         # Fallback to btc_1d.csv
-        data_file = f'learning/data/{symbol.lower()}_1d.csv'
+        data_file = f'../learning/data/{symbol.lower()}_1d.csv'
         if os.path.exists(data_file):
             df = pd.read_csv(data_file, parse_dates=['timestamp'], index_col='timestamp')
         else:
@@ -108,17 +108,74 @@ def load_training_data(
 
 
 def compute_regime_probs(data: pd.DataFrame, rolling_window: int = 180) -> np.ndarray:
-    """Compute HMM regime probabilities - simplified for initial training."""
-    print(f"🔮 Computing HMM regime probabilities...")
+    """Compute HMM regime probabilities with true Baum-Welch algorithm."""
+    print(f"🔮 Computing HMM regime probabilities (TRUE HMM)...")
     
     n_samples = len(data)
     
-    # For initial training, use uniform probabilities
-    # TODO: Implement proper rolling HMM fitting
-    regime_probs = np.ones((n_samples, 4)) / 4
+    # Calculate returns and volatility
+    returns = np.log(data['close'] / data['close'].shift(1)).values
+    volatility = pd.Series(returns).rolling(30).std().values * np.sqrt(252)
     
-    print(f"   Using uniform probabilities (4 regimes, {n_samples} samples)")
-    print(f"   Note: HMM integration pending - uniform prior used for now")
+    # Remove NaN from initial calculations
+    valid_mask = ~np.isnan(returns) & ~np.isnan(volatility)
+    returns_clean = returns[valid_mask]
+    vol_clean = volatility[valid_mask]
+    
+    if len(returns_clean) < rolling_window + 10:
+        print(f"   ⚠️ Insufficient data for HMM ({len(returns_clean)} samples), using uniform")
+        return np.ones((n_samples, 4)) / 4
+    
+    # Initialize HMM detector
+    from core.hmm_regime_detector import TrueHMMRegimeDetector
+    hmm = TrueHMMRegimeDetector(n_regimes=4, rolling_window=rolling_window)
+    
+    # Fit on available data
+    try:
+        hmm.fit_rolling(returns_clean, vol_clean)
+        print(f"   ✅ HMM fitted with Baum-Welch algorithm")
+    except Exception as e:
+        print(f"   ⚠️ HMM fit failed: {e}, using uniform")
+        return np.ones((n_samples, 4)) / 4
+    
+    # Generate regime probabilities for each timestep
+    regime_probs = np.ones((n_samples, 4)) / 4  # Default uniform
+    
+    # Use rolling prediction
+    min_idx = int(np.where(valid_mask)[0][0])
+    for i in range(min_idx + rolling_window, n_samples):
+        try:
+            # Get last rolling_window observations
+            start_idx = i - rolling_window
+            end_idx = i
+            
+            ret_window = returns[start_idx:end_idx]
+            vol_window = volatility[start_idx:end_idx]
+            
+            # Remove any NaN in window
+            valid_window = ~np.isnan(ret_window) & ~np.isnan(vol_window)
+            if valid_window.sum() < rolling_window // 2:
+                continue
+            
+            ret_clean = ret_window[valid_window]
+            vol_clean_w = vol_window[valid_window]
+            
+            # Predict regime
+            X = np.column_stack([ret_clean, vol_clean_w])
+            X_scaled = hmm.scaler.transform(X)
+            probs = hmm.model.predict_proba(X_scaled)
+            
+            # Use last prediction for this timestep
+            if len(probs) > 0:
+                regime_probs[i] = probs[-1]
+        except Exception as e:
+            # Keep uniform on error
+            pass
+    
+    # Log regime distribution
+    avg_probs = regime_probs.mean(axis=0)
+    print(f"   📊 Regime distribution: BULL={avg_probs[0]:.1%}, BEAR={avg_probs[1]:.1%}, "
+          f"RANGE={avg_probs[2]:.1%}, VOLATILE={avg_probs[3]:.1%}")
     
     return regime_probs
 
