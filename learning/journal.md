@@ -5,7 +5,7 @@
 
 ---
 
-## 📅 Semaine 36 - 29 Mai 2026 - PPO avec Reward Shaping v2 + HMM
+## 📅 Semaine 36 - 29 Mai 2026 - PPO avec Reward Shaping v2 + Feature Engineering v3
 
 ### 🎯 29 Mai 2026 - 08:30 UTC - PPO Reward Shaping v2 ✅
 
@@ -40,17 +40,56 @@
 3. **Même trading frequency (235 trades):** L'agent ne trade pas plus, mais trade mieux
 4. **Regime confidence weighting:** Fonctionne bien, bonus plus fort quand HMM est confiant
 
-**Comparaison v1 vs v2:**
-- v1: regime_bonus=0.05 (fixe), drawdown=0.5, vol=0.1 → agent trop conservateur
-- v2: regime_bonus=0.15×confidence, drawdown=0.2, vol=0.02 → agent plus équilibré
+---
+
+### 🎯 29 Mai 2026 - 09:15 UTC - Feature Engineering v3 ✅
+
+**Contexte:** L'observation space avait 187 features dont seulement 4 pour les regime probs (2%) → signal noyé. J'ai ajouté 3 features dérivées du régime pour renforcer le signal HMM.
+
+**Nouvelles features v3:**
+1. `regime_momentum` = (bull_prob - bear_prob) × momentum
+   - Capture l'interaction régime × direction du marché
+2. `regime_vol` = regime_confidence × volatility
+   - Signal fort quand HMM confiant + vol élevée
+3. `regime_trend` = bull_prob - bear_prob
+   - Trend strength signé (positif = bull dominant)
+
+**Observation space:** 187 → **190 features** (+3 regime-derived)
+
+**Résultats PPO v3 (100k timesteps):**
+| Métrique | v2 (Reward) | v3 (Features) | Delta |
+|----------|-------------|---------------|-------|
+| Mean Reward | -20.65 | **-20.43** | +1.1% ✅ |
+| Mean Trades | 235 | **258** | +10% ✅ |
+| Eval Reward (best 75k) | -36,887 | **-35,727** | **+3.2%** ✅ |
+| Eval Reward (final 100k) | -36,887 | -36,966 | -0.2% ⚠️ |
+
+**Progression évaluation v3:**
+- 5k steps: -40,503
+- 25k steps: -40,398
+- 50k steps: -40,540
+- 75k steps: -35,727 ← Best
+- 100k steps: -36,966 ← Final (légère régression)
+
+**Insights:**
+1. **+1.1% mean reward:** Features v3 aident marginalement
+2. **+10% trades:** L'agent trade plus (258 vs 235) → plus confiant avec features enrichies
+3. **Best eval @75k:** -35,727 (meilleur que v2 -36,887) → early stopping potentiel
+4. **Conclusion:** Reward shaping v2 = improvement majeur (+18%), Features v3 = refinement mineur (+1%)
+
+**Comparaison complète:**
+| Version | Mean Reward | Trades | Eval Best | Improvement |
+|---------|-------------|--------|-----------|-------------|
+| Uniforme | -26.19 | 185 | -40,000 | baseline |
+| HMM v1 | -25.13 | 235 | -40,031 | +4.0% |
+| HMM v2 (Reward) | -20.65 | 235 | -36,887 | +18.0% |
+| HMM v3 (Features) | -20.43 | 258 | -35,727 | +18.9% |
 
 **Prochaines étapes:**
-1. [ ] **Feature engineering:** Ajouter features dérivées du régime (regime_momentum, regime_vol)
-2. [ ] **Walk-forward validation:** Gates Bailey metrics (CPCV, DSR, PSR, PBO)
-3. [ ] **Shadow Mode J+3:** Monitoring quotidien
-4. [ ] **Multi-agent RL:** 4 agents spécialisés par régime
-
----
+1. [ ] **Walk-forward validation:** Gates Bailey metrics (CPCV, DSR, PSR, PBO)
+2. [ ] **Shadow Mode J+3:** Monitoring quotidien
+3. [ ] **Multi-agent RL:** 4 agents spécialisés par régime
+4. [ ] **Hyperparameter tuning:** Learning rate, clip range, entropy coeff
 
 ### 🎯 29 Mai 2026 - 04:03 UTC - Formation Autonome Saiyan - Checkpoint J+3
 
