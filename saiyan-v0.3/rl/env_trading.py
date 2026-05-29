@@ -84,14 +84,15 @@ class TradingEnv(gym.Env):
             )  # -1=full short, 0=flat, +1=full long
         
         # Observation space
-        # Features: returns(lookback) + vol(lookback) + rsi(lookback) + regime(4) + portfolio(3)
-        n_features = lookback_window * 3 + 4 + 3  # price features + regime + portfolio
+        # Features: returns(lookback) + vol(lookback) + rsi(lookback) + regime(4) + v3_features(3) + portfolio(3)
+        # v3: Added regime_momentum, regime_vol, regime_trend
+        n_features = lookback_window * 3 + 4 + 3 + 3  # price features + regime + v3_features + portfolio
         self.observation_space = spaces.Box(
             low=-np.inf, high=np.inf,
             shape=(n_features,), dtype=np.float32
         )
         
-        print(f"[TradingEnv] Observation space: {n_features} features (lookback={lookback_window})")
+        print(f"[TradingEnv] Observation space: {n_features} features (lookback={lookback_window}, v3=True)")
         
         # State variables
         self.current_step = 0
@@ -108,7 +109,7 @@ class TradingEnv(gym.Env):
         self.render_mode = None
         
     def _preprocess_data(self):
-        """Calculer features techniques"""
+        """Calculer features techniques + regime-derived features v3"""
         df = self.data
         
         # Log returns
@@ -132,6 +133,12 @@ class TradingEnv(gym.Env):
         
         # Normalize returns for stability
         df['returns_norm'] = (df['returns'] - df['returns'].mean()) / (df['returns'].std() + 1e-9)
+        
+        # Regime-derived features (will be populated during env initialization)
+        # These are placeholders - actual values computed in _get_observation with regime probs
+        df['regime_momentum'] = 0.0  # Will be: dominant_regime × momentum
+        df['regime_vol'] = 0.0  # Will be: dominant_regime × volatility
+        df['regime_trend'] = 0.0  # Will be: bull_confidence - bear_confidence
         
         # Fill NaN with 0
         df = df.fillna(0)
@@ -176,6 +183,23 @@ class TradingEnv(gym.Env):
         else:
             regime_probs = regime_probs[:4]  # Truncate to 4 if larger
         
+        # Regime-derived features v3 (enhanced signal)
+        dominant_regime = np.argmax(regime_probs)
+        regime_confidence = regime_probs[dominant_regime]
+        
+        # Get current momentum and volatility for regime interaction
+        current_return = self.data['returns_norm'].iloc[self.current_step]
+        current_vol = self.data['volatility'].iloc[self.current_step] / 100.0  # Normalize
+        
+        # Regime-momentum interaction: regime signal × momentum
+        regime_momentum = (regime_probs[0] - regime_probs[1]) * current_return  # bull-bear × momentum
+        
+        # Regime-vol interaction: confidence × vol (high conf + high vol = strong signal)
+        regime_vol = regime_confidence * current_vol
+        
+        # Regime trend: bull_confidence - bear_confidence (signed trend strength)
+        regime_trend = regime_probs[0] - regime_probs[1]
+        
         # Portfolio state
         current_price = self.data['close'].iloc[self.current_step]
         position_value = self.position * current_price
@@ -187,16 +211,18 @@ class TradingEnv(gym.Env):
         ], dtype=np.float32)
         
         # Concatenate all features
+        # v3: Added regime-derived features (regime_momentum, regime_vol, regime_trend)
         observation = np.concatenate([
             returns_window.astype(np.float32),
             vol_window.astype(np.float32),
             rsi_window.astype(np.float32),
             regime_probs.astype(np.float32),
+            np.array([regime_momentum, regime_vol, regime_trend], dtype=np.float32),  # v3 features
             portfolio_state
         ])
         
         # Debug: verify size
-        expected_size = self.lookback_window * 3 + 4 + 3
+        expected_size = self.lookback_window * 3 + 4 + 3 + 3  # price + regime + v3_features + portfolio
         if len(observation) != expected_size:
             print(f"[DEBUG] Obs size mismatch: got {len(observation)}, expected {expected_size}")
             print(f"  returns: {len(returns_window)}, vol: {len(vol_window)}, rsi: {len(rsi_window)}")
